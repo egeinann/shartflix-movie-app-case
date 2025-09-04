@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shartflix_movie_app_case/core/utils/app_icons.dart';
+import 'package:shartflix_movie_app_case/core/utils/strings.dart';
 import 'package:shartflix_movie_app_case/home_screen.dart';
 import 'package:shartflix_movie_app_case/profile_screen.dart';
 
@@ -18,29 +20,58 @@ class _MainScreenState extends State<MainScreen> {
       extendBody: true,
       body: Center(child: selectedIndex == 0 ? HomeScreen() : ProfileScreen()),
       bottomNavigationBar: Container(
-        color: Colors.transparent,
-        padding: const EdgeInsets.all(8),
-        height: 70,
+        margin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+
+        height: 50,
         child: Row(
           children: [
             Expanded(
               child: GestureDetector(
                 onTap: () => setState(() => selectedIndex = 0),
-                child: Container(
+                child: AnimatedContainer(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  duration: const Duration(milliseconds: 300),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: selectedIndex == 0 ? Colors.red : Colors.transparent,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: selectedIndex == 0
+                          ? [
+                              Theme.of(context).highlightColor,
+                              Theme.of(context).primaryColor,
+                            ]
+                          : [Colors.transparent, Colors.transparent],
+                    ),
+
                     border: Border.all(
-                      color: selectedIndex == 0 ? Colors.red : Colors.grey,
-                      width: 2,
+                      color: selectedIndex == 1
+                          ? Colors.grey
+                          : Colors.transparent,
+                      width: 1,
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
-                    'Page 1',
-                    style: TextStyle(
-                      color: selectedIndex == 0 ? Colors.white : Colors.black,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppIcons.icon(
+                        selectedIndex == 1 ? AppIcons.home : AppIcons.homeFill,
+                        color: selectedIndex == 1 ? Colors.black : Colors.white,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Home",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontFamily: AppFontFamilies.instrumentSansRegular,
+                          color: selectedIndex == 1
+                              ? Theme.of(context).shadowColor
+                              : Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -50,21 +81,51 @@ class _MainScreenState extends State<MainScreen> {
               child: GestureDetector(
                 onTap: () => setState(() => selectedIndex = 1),
                 child: AnimatedContainer(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   duration: const Duration(milliseconds: 300),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: selectedIndex == 1 ? Colors.red : Colors.transparent,
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: selectedIndex == 1
+                          ? [
+                              Theme.of(context).highlightColor,
+                              Theme.of(context).primaryColor,
+                            ]
+                          : [Colors.transparent, Colors.transparent],
+                    ),
+
                     border: Border.all(
-                      color: selectedIndex == 1 ? Colors.red : Colors.grey,
-                      width: 2,
+                      color: selectedIndex == 0
+                          ? Colors.grey
+                          : Colors.transparent,
+                      width: 1,
                     ),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
-                    'Page 2',
-                    style: TextStyle(
-                      color: selectedIndex == 1 ? Colors.white : Colors.black,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      AppIcons.icon(
+                        selectedIndex == 0
+                            ? AppIcons.profile
+                            : AppIcons.profileFill,
+                        color: selectedIndex == 0 ? Colors.black : Colors.white,
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        "Profile",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontFamily: AppFontFamilies.instrumentSansRegular,
+                          color: selectedIndex == 0
+                              ? Theme.of(context).shadowColor
+                              : Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

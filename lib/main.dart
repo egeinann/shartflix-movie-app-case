@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/utils/themes.dart';
-import 'package:shartflix_movie_app_case/main_screen.dart';
+import 'package:shartflix_movie_app_case/view/auth/login_screen.dart';
 
 void main() {
   runApp(const ShartflixApp());
@@ -9,7 +9,7 @@ void main() {
 
 final themeModeNotifier = ValueNotifier<ThemeMode>(
   ThemeMode.light,
-); // tema modu dinleyici
+);
 
 class ShartflixApp extends StatelessWidget {
   const ShartflixApp({super.key});
@@ -25,7 +25,7 @@ class ShartflixApp extends StatelessWidget {
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
             themeMode: ThemeMode.dark,
-            home: MainScreen(),
+            home: LoginScreen(),
           ),
         );
       },

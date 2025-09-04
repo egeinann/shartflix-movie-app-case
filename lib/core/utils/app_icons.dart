@@ -16,19 +16,26 @@ class AppIcons {
   static const String see = 'assets/icons/See.png';
   static const String user = 'assets/icons/User.png';
   static const String x = 'assets/icons/X.png';
+  static const String apple = 'assets/socialIcons/Apple.png';
+  static const String facebook = 'assets/socialIcons/Facebook.png';
+  static const String google = 'assets/socialIcons/Google.png';
 
-  // Ana ikon helper fonksiyonu (dark/light tema değişiminde assetlerin renk değişimi)
   static Widget icon(
     String path, {
-    double size = 24,
     Color? color,
+    double size = 24,
   }) {
     return Builder(
-      builder: (context) => ImageIcon(
-        AssetImage(path),
-        size: size,
-        color: color ?? Theme.of(context).iconTheme.color,
-      ),
+      builder: (context) {
+        final theme = Theme.of(context);
+        final isDark = theme.brightness == Brightness.dark;
+
+        return ImageIcon(
+          AssetImage(path),
+          size: size,
+          color: color ?? (isDark ? null : Theme.of(context).iconTheme.color),
+        );
+      },
     );
   }
 }

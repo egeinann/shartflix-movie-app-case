@@ -30,8 +30,8 @@ class CustomFilledButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           overlayColor: Colors.white,
           backgroundColor:
-              Colors.transparent, // Container'daki gradient görünür
-          shadowColor: Colors.transparent, // gölgeyi kaldırmak için
+              Colors.transparent,
+          shadowColor: Colors.transparent, 
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
