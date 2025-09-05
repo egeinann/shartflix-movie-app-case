@@ -69,7 +69,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/socialIcons/
-
+    - assets/images/onboarding/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
@@ -89,6 +89,10 @@ flutter:
     - family: InstrumentSansMedium
       fonts:
         - asset: assets/fonts/InstrumentSans-Medium.ttf
+
+    - family: BebasNeue
+      fonts:
+        - asset: assets/fonts/BebasNeue-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

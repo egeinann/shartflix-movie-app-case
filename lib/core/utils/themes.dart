@@ -12,6 +12,7 @@ class AppTheme {
     primaryColor: AppColorsLight.primary,
     highlightColor: AppColorsLight.highlight,
     cardColor: AppColorsLight.card,
+    canvasColor: AppColorsLight.canvas,
     iconTheme: IconThemeData(color: AppColorsDark.background),
     textTheme: TextTheme(
       bodyLarge: TextStyle(
@@ -54,19 +55,19 @@ class AppTheme {
         color: AppColorsLight.primary,
         fontSize: 24.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
       labelMedium: TextStyle(
         color: AppColorsLight.primary,
         fontSize: 22.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
       labelSmall: TextStyle(
         color: AppColorsLight.primary,
         fontSize: 20.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
     ),
   );
@@ -79,6 +80,7 @@ class AppTheme {
     primaryColor: AppColorsDark.primary,
     highlightColor: AppColorsLight.highlight,
     cardColor: AppColorsDark.card,
+    canvasColor: AppColorsDark.canvas,
     textTheme: TextTheme(
       bodyLarge: TextStyle(
         color: AppColorsDark.shadow,
@@ -99,19 +101,19 @@ class AppTheme {
         fontFamily: AppFontFamilies.instrumentSansRegular,
       ),
       headlineLarge: TextStyle(
-        color: AppColorsDark.background,
+        color: AppColorsLight.background,
         fontSize: 18.sp,
         fontWeight: FontWeight.bold,
         fontFamily: AppFontFamilies.instrumentSansRegular,
       ),
       headlineMedium: TextStyle(
-        color: AppColorsDark.background,
+        color: AppColorsLight.background,
         fontSize: 16.sp,
         fontWeight: FontWeight.bold,
         fontFamily: AppFontFamilies.instrumentSansRegular,
       ),
       headlineSmall: TextStyle(
-        color: AppColorsDark.background,
+        color: AppColorsLight.background,
         fontSize: 14.sp,
         fontWeight: FontWeight.bold,
         fontFamily: AppFontFamilies.instrumentSansRegular,
@@ -120,19 +122,19 @@ class AppTheme {
         color: AppColorsDark.primary,
         fontSize: 24.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
       labelMedium: TextStyle(
         color: AppColorsDark.primary,
         fontSize: 22.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
       labelSmall: TextStyle(
         color: AppColorsDark.primary,
         fontSize: 20.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.instrumentSansMedium,
+        fontFamily: AppFontFamilies.bebasNeue,
       ),
     ),
   );

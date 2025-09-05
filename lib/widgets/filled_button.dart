@@ -21,18 +21,21 @@ class CustomFilledButton extends StatelessWidget {
           colors: [
             Theme.of(context).highlightColor,
             Theme.of(context).primaryColor,
+            
           ], // istediğin gradient renkleri
         ),
         borderRadius: BorderRadius.circular(30),
       ),
       child: ElevatedButton(
+        
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
+          
           overlayColor: Colors.white,
           backgroundColor:
               Colors.transparent,
           shadowColor: Colors.transparent, 
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
