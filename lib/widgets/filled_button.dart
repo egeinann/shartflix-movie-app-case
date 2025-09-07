@@ -14,35 +14,31 @@ class CustomFilledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 56,
+     
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Theme.of(context).highlightColor,
-            Theme.of(context).primaryColor,
-            
-          ], // istediğin gradient renkleri
-        ),
-        borderRadius: BorderRadius.circular(30),
+        color: Theme.of(context).highlightColor,
+        borderRadius: BorderRadius.circular(16),
       ),
       child: ElevatedButton(
-        
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          
           overlayColor: Colors.white,
-          backgroundColor:
-              Colors.transparent,
-          shadowColor: Colors.transparent, 
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(16),
           ),
           minimumSize: Size(25.w, 5.h),
           elevation: 0,
         ),
-        child: Text(text, style: Theme.of(context).textTheme.headlineLarge),
+        child: Text(
+          text,
+          style: Theme.of(
+            context,
+          ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
+        ),
       ),
     );
   }

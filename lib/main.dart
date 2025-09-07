@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/bloc/theme_cubit.dart';
-
 import 'package:shartflix_movie_app_case/core/utils/themes.dart';
-import 'package:shartflix_movie_app_case/view/app/controller_screen.dart';
+import 'package:shartflix_movie_app_case/view/splash/splash_screen.dart';
 
 void main() {
   runApp(const ShartflixApp());
@@ -25,7 +24,7 @@ class ShartflixApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: themeMode,
-              home: const ControllerScreen(),
+              home: const SplashScreen(),
             ),
           );
         },

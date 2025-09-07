@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shartflix_movie_app_case/core/utils/app_icons.dart';
-import 'package:shartflix_movie_app_case/core/utils/strings.dart';
-import 'package:shartflix_movie_app_case/view/app/home_screen.dart';
-import 'package:shartflix_movie_app_case/view/app/profile_screen.dart';
+import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
+import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/view/app/view/home_screen.dart';
+import 'package:shartflix_movie_app_case/view/app/view/profile_screen.dart';
+import 'package:shartflix_movie_app_case/widgets/shadow_effect.dart';
 
 class ControllerScreen extends StatefulWidget {
   const ControllerScreen({super.key});
@@ -18,7 +19,16 @@ class _ControllerScreenState extends State<ControllerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: Center(child: selectedIndex == 0 ? HomeScreen() : ProfileScreen()),
+      body: Center(
+        child: Stack(
+          children: [
+            AppBackground.lightEffect(highLight: false),
+            SafeArea(
+              child: selectedIndex == 0 ? HomeScreen() : ProfileScreen(),
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -59,7 +69,9 @@ class _ControllerScreenState extends State<ControllerScreen> {
                       children: [
                         AppIcons.icon(
                           selectedIndex == 1 ? AppIcons.home : AppIcons.homeFill,
-                          color: selectedIndex == 1 ? Theme.of(context).shadowColor : Colors.white,
+                          color: selectedIndex == 1
+                              ? Theme.of(context).shadowColor
+                              : Colors.white,
                         ),
                         SizedBox(width: 5),
                         Text(
@@ -113,7 +125,9 @@ class _ControllerScreenState extends State<ControllerScreen> {
                           selectedIndex == 0
                               ? AppIcons.profile
                               : AppIcons.profileFill,
-                          color: selectedIndex == 0 ? Theme.of(context).shadowColor : Colors.white,
+                          color: selectedIndex == 0
+                              ? Theme.of(context).shadowColor
+                              : Colors.white,
                         ),
                         SizedBox(width: 5),
                         Text(

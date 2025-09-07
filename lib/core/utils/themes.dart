@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/utils/colors.dart';
-import 'package:shartflix_movie_app_case/core/utils/strings.dart';
+import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 
 class AppTheme {
   // *** LİGHT ***
@@ -55,19 +55,19 @@ class AppTheme {
         color: AppColorsLight.primary,
         fontSize: 24.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
       labelMedium: TextStyle(
         color: AppColorsLight.primary,
         fontSize: 22.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
       labelSmall: TextStyle(
         color: AppColorsLight.primary,
         fontSize: 20.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
     ),
   );
@@ -122,19 +122,19 @@ class AppTheme {
         color: AppColorsDark.primary,
         fontSize: 24.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
       labelMedium: TextStyle(
         color: AppColorsDark.primary,
         fontSize: 22.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
       labelSmall: TextStyle(
         color: AppColorsDark.primary,
         fontSize: 20.sp,
         fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamilies.bebasNeue,
+        fontFamily: AppFontFamilies.plusJakartaSans,
       ),
     ),
   );

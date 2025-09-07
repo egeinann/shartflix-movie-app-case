@@ -22,7 +22,7 @@ class CustomCheckBox extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: isSelected ? Theme.of(context).highlightColor : Colors.grey,
-            width: 2,
+            width: 1,
           ),
         ),
         child: isSelected
