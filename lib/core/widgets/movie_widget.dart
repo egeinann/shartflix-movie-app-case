@@ -32,14 +32,14 @@ class MovieWidget extends StatelessWidget {
         Text(
           name,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Color(0xFFFFFFFF),
+           
             fontWeight: FontWeight.w600,
           ),
         ),
         Text(
-        title,
+          title,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Color(0xFFFFFFFF).withOpacity(0.5),
+            color: Theme.of(context).textTheme.bodyLarge!.color?.withOpacity(0.5),
             fontWeight: FontWeight.w400,
           ),
         ),

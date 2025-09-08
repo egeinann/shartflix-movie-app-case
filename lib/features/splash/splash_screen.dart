@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
-import 'package:shartflix_movie_app_case/view/auth/view/login_screen.dart';
-import 'package:shartflix_movie_app_case/widgets/shadow_effect.dart';
+import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -48,10 +47,7 @@ class _SplashScreenState extends State<SplashScreen>
     // *** ANİMASYON BİTİNCE SAYFA DEĞİŞ ***
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(builder: (context) => LoginScreen()),
-        );
+        NavigationService().clearStackAndGo('/login');
       }
     });
   }

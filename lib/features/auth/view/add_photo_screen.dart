@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
-import 'package:shartflix_movie_app_case/view/app/controller/controller_screen.dart';
-import 'package:shartflix_movie_app_case/widgets/filled_button.dart';
-import 'package:shartflix_movie_app_case/widgets/shadow_effect.dart';
+import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
+import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
 class AddPhotoScreen extends StatelessWidget {
   const AddPhotoScreen({super.key});
@@ -45,7 +44,7 @@ class AddPhotoScreen extends StatelessWidget {
         Align(
           alignment: Alignment.centerLeft,
           child: GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: () => NavigationService().goBack(),
             child: Container(
               width: 44,
               height: 44,
@@ -81,23 +80,23 @@ class AddPhotoScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
-      spacing: 15,
+      spacing: 20,
       children: [
         SizedBox(
           width: 100.w,
-          child: CustomFilledButton(text: "Devam Et", onPressed: () {}),
+          child: CustomFilledButton(
+            text: "Devam Et",
+            onPressed: () => NavigationService().clearStackAndGo('/controller'),
+          ),
         ),
         GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            CupertinoPageRoute(builder: (context) => const ControllerScreen()),
-          ),
+          onTap: () => NavigationService().clearStackAndGo('/controller'),
           child: SizedBox(
             width: 100.w,
 
             child: Text(
               "Atla",
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ),

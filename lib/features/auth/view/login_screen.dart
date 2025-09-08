@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
 import 'package:shartflix_movie_app_case/core/constants/lotties.dart';
-import 'package:shartflix_movie_app_case/view/auth/view/register_screen.dart';
-import 'package:shartflix_movie_app_case/view/auth/widgets/social_container.dart';
-import 'package:shartflix_movie_app_case/view/auth/widgets/customTextField.dart';
-import 'package:shartflix_movie_app_case/widgets/filled_button.dart';
-import 'package:shartflix_movie_app_case/widgets/shadow_effect.dart';
+import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/social_container.dart';
+import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
+import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
+import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 double opacity = 0.0;
+double opacityLottie = 0.0;
 
 class _LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
@@ -35,6 +35,11 @@ class _LoginScreenState extends State<LoginScreen>
     Future.delayed(const Duration(milliseconds: 300), () {
       setState(() {
         opacity = 1.0;
+      });
+    });
+    Future.delayed(const Duration(milliseconds: 600), () {
+      setState(() {
+        opacityLottie = 1.0;
       });
     });
     _controller = AnimationController(
@@ -102,7 +107,14 @@ class _LoginScreenState extends State<LoginScreen>
                   physics: const BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      Lottie.asset(AppLotties.artboard_1),
+                      SizedBox(
+                        height: 20.h,
+                        child: AnimatedOpacity(
+                          duration: const Duration(seconds: 1),
+                          opacity: opacityLottie,
+                          child: Lottie.asset(AppLotties.artboard_1),
+                        ),
+                      ),
                       Column(
                         children: [
                           logoHeader(context),
@@ -212,12 +224,7 @@ class _LoginScreenState extends State<LoginScreen>
               splashFactory: NoSplash.splashFactory,
             ),
             onPressed: () {
-              Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => const RegisterScreen(),
-                ),
-              );
+              NavigationService().navigateTo('/register');
             },
             child: Text(
               "Kayıt ol",

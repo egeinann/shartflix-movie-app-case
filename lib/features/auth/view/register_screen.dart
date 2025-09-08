@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
-import 'package:shartflix_movie_app_case/view/app/view/add_photo_screen.dart';
-import 'package:shartflix_movie_app_case/view/auth/widgets/social_container.dart';
-import 'package:shartflix_movie_app_case/view/auth/widgets/checkBox.dart';
-import 'package:shartflix_movie_app_case/view/auth/widgets/customTextField.dart';
-import 'package:shartflix_movie_app_case/widgets/filled_button.dart';
-import 'package:shartflix_movie_app_case/widgets/shadow_effect.dart';
+import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/social_container.dart';
+import 'package:shartflix_movie_app_case/core/widgets/checkBox.dart';
+import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
+import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
+import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -143,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               overlayColor: WidgetStateProperty.all(Colors.transparent),
               splashFactory: NoSplash.splashFactory,
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => NavigationService().goBack(),
             child: Text(
               "Giriş Yap",
               style: Theme.of(context).textTheme.bodySmall,
@@ -276,12 +275,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                 text: "Kaydol",
                 onPressed: () {
                   isChecked
-                      ? Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                            builder: (context) => const AddPhotoScreen(),
-                          ),
-                        )
+                      ? NavigationService().navigateTo('/addphoto')
                       : print("çalışmıyor isChecked değeri false");
                 },
               ),

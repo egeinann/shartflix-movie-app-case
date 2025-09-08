@@ -1,5 +1,6 @@
 // *** KOD TEKRARINI AZALTMAK İÇİN BİR FONKSİYON ***
 import 'package:flutter/material.dart';
+import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 
 Widget socialContainer(BuildContext context,String iconPath, VoidCallback onTap) {
   return GestureDetector(
@@ -15,7 +16,7 @@ Widget socialContainer(BuildContext context,String iconPath, VoidCallback onTap)
         ),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Image.asset(iconPath),
+      child: AppIcons.icon(iconPath),
     ),
   );
 }

@@ -69,8 +69,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/socialIcons/
-    - assets/images/images/
-    - assets/images/logo/
+    - assets/logo/
     - assets/lotties/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -91,6 +90,14 @@ flutter:
     - family: InstrumentSansMedium
       fonts:
         - asset: assets/fonts/InstrumentSans-Medium.ttf
+    
+    - family: InstrumentSansSemiBold
+      fonts:
+        - asset: assets/fonts/InstrumentSans-SemiBold.ttf
+
+    - family: InstrumentSansBold
+      fonts:
+        - asset: assets/fonts/InstrumentSans-Bold.ttf
 
     - family: PlusJakartaSans
       fonts:

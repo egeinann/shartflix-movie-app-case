@@ -20,11 +20,7 @@ class AppIcons {
   static const String facebook = 'assets/socialIcons/Facebook.png';
   static const String google = 'assets/socialIcons/Google.png';
 
-  static Widget icon(
-    String path, {
-    Color? color,
-    double size = 24,
-  }) {
+  static Widget icon(String path, {Color? color, double size = 24}) {
     return Builder(
       builder: (context) {
         final theme = Theme.of(context);
@@ -35,6 +31,21 @@ class AppIcons {
           size: size,
           color: color ?? (isDark ? null : Theme.of(context).iconTheme.color),
         );
+      },
+    );
+  }
+}
+
+class AppPremiumIcons {
+  static const String premiumAccountIcon =
+      'assets/icons/premium_account_icon.png';
+  static const String moreMatchIcon = 'assets/icons/more_match_icon.png';
+  static const String featuredIcon = 'assets/icons/featured_icon.png';
+  static const String moreLikesIcon = 'assets/icons/more_likes_icon.png';
+  static Widget icon(String path, {double size = 24}) {
+    return Builder(
+      builder: (context) {
+        return ImageIcon(AssetImage(path), size: size);
       },
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shartflix_movie_app_case/core/utils/colors.dart';
+import 'package:shartflix_movie_app_case/core/themes/colors.dart';
 
 class CustomCheckBox extends StatelessWidget {
   final bool isSelected;

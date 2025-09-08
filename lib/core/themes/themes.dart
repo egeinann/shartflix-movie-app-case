@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shartflix_movie_app_case/core/utils/colors.dart';
+import 'package:shartflix_movie_app_case/core/themes/colors.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 
 class AppTheme {
@@ -87,6 +87,7 @@ class AppTheme {
         fontSize: 18.sp,
         fontWeight: FontWeight.bold,
         fontFamily: AppFontFamilies.instrumentSansRegular,
+    
       ),
       bodyMedium: TextStyle(
         color: AppColorsDark.shadow,
@@ -136,6 +137,7 @@ class AppTheme {
         fontWeight: FontWeight.bold,
         fontFamily: AppFontFamilies.plusJakartaSans,
       ),
+      
     ),
   );
 }

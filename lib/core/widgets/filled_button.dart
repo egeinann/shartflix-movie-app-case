@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 
 class CustomFilledButton extends StatelessWidget {
   final String text;
@@ -37,7 +38,10 @@ class CustomFilledButton extends StatelessWidget {
           text,
           style: Theme.of(
             context,
-          ).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
+          ).textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            fontFamily: AppFontFamilies.instrumentSansSemiBold,
+          ),
         ),
       ),
     );
