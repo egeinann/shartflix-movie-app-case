@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/controller_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/settings_screen.dart';
@@ -14,6 +13,7 @@ class NavigationService {
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+  // *** NORMAL SAYFA GEÇİŞİ ***
   Future<dynamic>? navigateTo(String routeName, {Object? arguments}) {
     final context = navigatorKey.currentContext;
     if (context == null) return null;
@@ -22,6 +22,7 @@ class NavigationService {
     return Navigator.of(context).push(route);
   }
 
+  // ** GEÇİŞ YAPTIKTAN SONRA, ARKADAKİ 1 SAYFAYI KAPAT ***
   Future<dynamic>? replaceWith(String routeName, {Object? arguments}) {
     final context = navigatorKey.currentContext;
     if (context == null) return null;
@@ -30,6 +31,7 @@ class NavigationService {
     return Navigator.of(context).pushReplacement(route);
   }
 
+  // *** ARKADAİ TÜM SAYFALARI KAPAT ***
   Future<dynamic>? clearStackAndGo(String routeName, {Object? arguments}) {
     final context = navigatorKey.currentContext;
     if (context == null) return null;
@@ -38,6 +40,7 @@ class NavigationService {
     return Navigator.of(context).pushAndRemoveUntil(route, (_) => false);
   }
 
+  // ** POP ***
   void goBack() {
     navigatorKey.currentState?.pop();
   }

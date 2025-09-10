@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
 import 'package:shartflix_movie_app_case/core/widgets/outlined_container.dart';
@@ -46,9 +47,9 @@ void showBottomSheetApp(BuildContext context) {
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context).canvasColor.withAlpha(150),
+                        color: context.theme.canvasColor.withAlpha(150),
                         border: Border.all(
-                          color: Theme.of(context).shadowColor.withAlpha(100),
+                          color: context.theme.shadowColor.withAlpha(100),
                         ),
                       ),
                       child: AppIcons.icon(AppIcons.x),
@@ -72,7 +73,7 @@ void showBottomSheetApp(BuildContext context) {
                       children: [
                         Text(
                           "Sınırlı Teklif",
-                          style: Theme.of(context).textTheme.bodyLarge
+                          style: context.textTheme.bodyLarge
                               ?.copyWith(
                                 fontFamily:
                                     AppFontFamilies.instrumentSansSemiBold,
@@ -81,7 +82,7 @@ void showBottomSheetApp(BuildContext context) {
                         ),
                         Text(
                           "Jeton paketin’ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!",
-                          style: Theme.of(context).textTheme.bodyMedium
+                          style: context.textTheme.bodyMedium
                               ?.copyWith(fontWeight: FontWeight.w400),
                           textAlign: TextAlign.center,
                         ),
@@ -93,7 +94,7 @@ void showBottomSheetApp(BuildContext context) {
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: Text(
                                   "Alacağınız Bonuslar",
-                                  style: Theme.of(context).textTheme.bodyMedium
+                                  style: context.textTheme.bodyMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.w500,
                                         fontFamily: AppFontFamilies
@@ -132,7 +133,7 @@ void showBottomSheetApp(BuildContext context) {
                           padding: const EdgeInsets.all(5),
                           child: Text(
                             "Kilidi açmak için bir jeton paketi seçin",
-                            style: Theme.of(context).textTheme.bodyMedium
+                            style: context.textTheme.bodyMedium
                                 ?.copyWith(
                                   fontWeight: FontWeight.w500,
                                   fontFamily:
@@ -152,7 +153,7 @@ void showBottomSheetApp(BuildContext context) {
                                 "300",
                                 "99,99",
                                 Color(0xFF6F060B),
-                                Theme.of(context).highlightColor,
+                                context.theme.highlightColor,
                                 () {},
                               ),
                             ),
@@ -164,7 +165,7 @@ void showBottomSheetApp(BuildContext context) {
                                 "3.375",
                                 "799,99",
                                 Color(0xFF5949E6),
-                                Theme.of(context).highlightColor,
+                                context.theme.highlightColor,
                                 () {},
                               ),
                             ),
@@ -176,7 +177,7 @@ void showBottomSheetApp(BuildContext context) {
                                 "1.350",
                                 "399,99",
                                 Color(0xFF6F060B),
-                                Theme.of(context).highlightColor,
+                                context.theme.highlightColor,
                                 () {},
                               ),
                             ),
@@ -256,13 +257,13 @@ Widget priceContainer(
             ),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: Theme.of(context).shadowColor.withAlpha(100),
+              color: context.theme.shadowColor.withAlpha(100),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(color: gradientColor1),
               BoxShadow(
-                color: Theme.of(context).shadowColor.withAlpha(150),
+                color: context.theme.shadowColor.withAlpha(150),
                 spreadRadius: 0,
                 blurRadius: 1,
               ),
@@ -276,7 +277,7 @@ Widget priceContainer(
                 children: [
                   Text(
                     oldTokens,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    style: context.textTheme.headlineSmall?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansMedium,
                       fontWeight: FontWeight.w500,
 
@@ -287,7 +288,7 @@ Widget priceContainer(
                   FittedBox(
                     child: Text(
                       newTokens,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      style: context.textTheme.labelLarge?.copyWith(
                         fontFamily: AppFontFamilies.instrumentSansBold,
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -296,7 +297,7 @@ Widget priceContainer(
                   ),
                   Text(
                     "Jeton",
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    style: context.textTheme.headlineMedium?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansMedium,
                       fontWeight: FontWeight.w500,
                     ),
@@ -310,7 +311,7 @@ Widget priceContainer(
                     "₺"
                     "$price",
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    style: context.textTheme.headlineMedium?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansBold,
                       fontWeight: FontWeight.w700,
                     ),
@@ -320,7 +321,7 @@ Widget priceContainer(
                     child: Text(
                       "Başına haftalık",
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium
+                      style: context.textTheme.headlineMedium
                           ?.copyWith(
                             fontFamily: AppFontFamilies.instrumentSansRegular,
                             fontWeight: FontWeight.w500,
@@ -344,18 +345,18 @@ Widget priceContainer(
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
                 width: 1,
-                color: Theme.of(context).shadowColor.withAlpha(50),
+                color: context.theme.shadowColor.withAlpha(50),
               ),
               gradient: RadialGradient(
                 radius: 3, // genişlik
-                colors: [gradientColor1, Theme.of(context).shadowColor],
+                colors: [gradientColor1, context.theme.shadowColor],
               ),
             ),
             child: Text(
               "+"
               "$percentage"
               "%",
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              style: context.textTheme.headlineMedium?.copyWith(
                 fontFamily: AppFontFamilies.instrumentSansRegular,
                 fontWeight: FontWeight.w400,
               ),

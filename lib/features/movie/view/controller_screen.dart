@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/home_screen.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/profile_screen.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
@@ -14,7 +15,7 @@ class ControllerScreen extends StatefulWidget {
 
 class _ControllerScreenState extends State<ControllerScreen> {
   int selectedIndex = 0;
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +24,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
         child: Stack(
           children: [
             AppBackground.lightEffect(highLight: false),
-            SafeArea(
-              child: selectedIndex == 0 ? HomeScreen() : ProfileScreen(),
-            ),
+            selectedIndex == 0 ? HomeScreen() : ProfileScreen(),
           ],
         ),
       ),
@@ -60,15 +59,14 @@ class _ControllerScreenState extends State<ControllerScreen> {
               end: Alignment.bottomCenter,
               colors: selectedIndex == 1
                   ? [
-                      Theme.of(context).highlightColor,
-                      Theme.of(context).primaryColor,
+                      context.theme.highlightColor, context.theme.primaryColor,
                     ]
                   : [Colors.transparent, Colors.transparent],
             ),
 
             border: Border.all(
               color: selectedIndex == 0
-                  ? Theme.of(context).shadowColor.withAlpha(50)
+                  ? context.theme.shadowColor.withAlpha(50)
                   : Colors.transparent,
               width: 1,
             ),
@@ -81,7 +79,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
               AppIcons.icon(
                 selectedIndex == 0 ? AppIcons.profile : AppIcons.profileFill,
                 color: selectedIndex == 0
-                    ? Theme.of(context).shadowColor
+                    ? context.shadowColor
                     : Colors.white,
               ),
               SizedBox(width: 5),
@@ -91,7 +89,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
                   fontWeight: FontWeight.w500,
                   fontFamily: AppFontFamilies.instrumentSansRegular,
                   color: selectedIndex == 0
-                      ? Theme.of(context).shadowColor
+                      ? context.shadowColor
                       : Colors.white,
                 ),
               ),
@@ -117,15 +115,14 @@ class _ControllerScreenState extends State<ControllerScreen> {
               end: Alignment.bottomCenter,
               colors: selectedIndex == 0
                   ? [
-                      Theme.of(context).highlightColor,
-                      Theme.of(context).primaryColor,
+                      context.theme.highlightColor, context.theme.primaryColor,
                     ]
                   : [Colors.transparent, Colors.transparent],
             ),
 
             border: Border.all(
               color: selectedIndex == 1
-                  ? Theme.of(context).shadowColor.withAlpha(50)
+                  ? context.theme.shadowColor.withAlpha(50)
                   : Colors.transparent,
               width: 1,
             ),
@@ -138,7 +135,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
               AppIcons.icon(
                 selectedIndex == 1 ? AppIcons.home : AppIcons.homeFill,
                 color: selectedIndex == 1
-                    ? Theme.of(context).shadowColor
+                    ? context.shadowColor
                     : Colors.white,
               ),
               SizedBox(width: 5),
@@ -148,7 +145,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
                   fontWeight: FontWeight.w500,
                   fontFamily: AppFontFamilies.instrumentSansRegular,
                   color: selectedIndex == 1
-                      ? Theme.of(context).shadowColor
+                      ? context.shadowColor
                       : Colors.white,
                 ),
               ),
@@ -158,4 +155,8 @@ class _ControllerScreenState extends State<ControllerScreen> {
       ),
     );
   }
+}
+
+extension on BuildContext {
+  get shadowColor => null;
 }

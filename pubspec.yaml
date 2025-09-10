@@ -42,11 +42,22 @@ dependencies:
   responsive_sizer: ^3.3.1
   animations: ^2.0.11
   lottie: ^3.3.1
+  equatable: ^2.0.7
+  flutter_launcher_icons: ^0.14.4
+  image_picker: ^1.2.0
+  shared_preferences: ^2.5.3
+  shimmer_animation: ^2.2.2
+  liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo/IconImage.png"
+  
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

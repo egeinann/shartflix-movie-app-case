@@ -1,13 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
+import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/social_container.dart';
 import 'package:shartflix_movie_app_case/core/widgets/checkBox.dart';
 import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
+import 'package:shartflix_movie_app_case/features/auth/view/add_photo_screen.dart';
+import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
+import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,9 +23,6 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-double opacity = 0.0;
-bool isChecked = false;
-
 class _RegisterScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
@@ -26,7 +30,16 @@ class _RegisterScreenState extends State<RegisterScreen>
   late Animation<Offset> _formAnim;
   late Animation<Offset> _socialAnim;
   late Animation<Offset> _footerAnim;
-
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController retryPasswordController = TextEditingController();
+  bool nameError = false;
+  bool emailError = false;
+  bool passwordError = false;
+  bool retryPasswordError = false;
+  bool isChecked = false;
+  double opacity = 0.0;
   @override
   void initState() {
     super.initState();
@@ -81,44 +94,68 @@ class _RegisterScreenState extends State<RegisterScreen>
   @override
   void dispose() {
     _controller.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    retryPasswordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: AnimatedOpacity(
-          opacity: opacity,
-          duration: const Duration(milliseconds: 500),
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              AppBackground.lightEffect(),
-              SafeArea(
-                child: Center(
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        logoHeader(context),
-                        forms(),
-                        socialContainers(context),
-                        footer(context),
-                      ],
+      body: BlocProvider(
+        create: (_) => AuthCubit(AuthServices()),
+        child: BlocConsumer<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state.error != null) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.error!)));
+            }
+            if (state.user != null) {
+              Future.microtask(() {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const AddPhotoScreen()),
+                );
+              });
+            }
+          },
+          builder: (context, state) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: AnimatedOpacity(
+                opacity: opacity,
+                duration: const Duration(milliseconds: 500),
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    AppBackground.lightEffect(),
+                    SafeArea(
+                      child: Center(
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              logoHeader(context),
+                              forms(),
+                              socialContainers(context),
+                              footer(context),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
@@ -145,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             onPressed: () => NavigationService().goBack(),
             child: Text(
               "Giriş Yap",
-              style: Theme.of(context).textTheme.bodySmall,
+              style: context.theme.textTheme.bodySmall,
             ),
           ),
         ],
@@ -172,6 +209,7 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   // *** TEXTFILEDS AND BUTTON AREA ***
   SlideTransition forms() {
+    final cubit = context.read<AuthCubit>();
     return SlideTransition(
       position: _formAnim,
       child: Padding(
@@ -182,32 +220,35 @@ class _RegisterScreenState extends State<RegisterScreen>
           spacing: 15,
           children: [
             CustomTextField(
-              prefixIcon: AppIcons.icon(AppIcons.mail),
-              controller: TextEditingController(),
-              hasError: true,
+              prefixIcon: AppIcons.icon(AppIcons.profile),
+              controller: nameController,
+              hasError: false,
               hinttext: "Ad Soyad",
               lenght: 20,
+              onChanged: cubit.nameChanged,
             ),
 
             CustomTextField(
-              prefixIcon: AppIcons.icon(AppIcons.lock),
-              controller: TextEditingController(),
-              hasError: true,
+              prefixIcon: AppIcons.icon(AppIcons.mail),
+              controller: emailController,
+              hasError: false,
               hinttext: "E-Posta",
               lenght: 20,
+              onChanged: cubit.emailChanged,
             ),
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
-              controller: TextEditingController(),
-              hasError: true,
+              controller: passwordController,
+              hasError: false,
               hinttext: "Şifre",
               lenght: 20,
               showPasswordToggle: true,
+              onChanged: cubit.passwordChanged,
             ),
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
-              controller: TextEditingController(),
-              hasError: true,
+              controller: retryPasswordController,
+              hasError: false,
               hinttext: "Şifre tekrar",
               lenght: 20,
               showPasswordToggle: true,
@@ -232,7 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                       children: [
                         TextSpan(
                           text: "Kullanıcı sözleşmesini",
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: context.textTheme.bodySmall
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
@@ -241,12 +282,12 @@ class _RegisterScreenState extends State<RegisterScreen>
                         ),
                         TextSpan(
                           text: " okudum ve kabul ediyorum.",
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: context.textTheme.bodySmall
                               ?.copyWith(decoration: TextDecoration.underline),
                         ),
                         TextSpan(
                           text: " Bu\n",
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: context.textTheme.bodySmall
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
@@ -255,7 +296,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         ),
                         TextSpan(
                           text: "sözleşmeyi okuyarak devam ediniz lütfen.",
-                          style: Theme.of(context).textTheme.bodySmall
+                          style: context.textTheme.bodySmall
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
@@ -275,8 +316,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                 text: "Kaydol",
                 onPressed: () {
                   isChecked
-                      ? NavigationService().navigateTo('/addphoto')
-                      : print("çalışmıyor isChecked değeri false");
+                      ? cubit.register()
+                      : debugPrint("sözleşmeyi kabul et");
                 },
               ),
             ),
@@ -297,8 +338,8 @@ class _RegisterScreenState extends State<RegisterScreen>
           Image.asset(AppImages.logo),
           Text(
             "Hesap oluştur",
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Theme.of(context).shadowColor,
+            style: context.textTheme.labelMedium?.copyWith(
+              color: context.theme.shadowColor,
             ),
           ),
           SizedBox(height: 10),

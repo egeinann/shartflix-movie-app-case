@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="shartflix_movie_app_case"
+        android:label="Shartflix"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

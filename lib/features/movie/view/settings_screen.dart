@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shartflix_movie_app_case/bloc/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/padding_extension.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/outlined_container.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shaderMaskWidget.dart';
@@ -51,10 +52,10 @@ class SettingsScreen extends StatelessWidget {
                         context,
                         Text(
                           "AYARLAR",
-                          style: Theme.of(context).textTheme.labelLarge
+              style: context.textTheme.labelLarge
                               ?.copyWith(
                                 fontFamily: AppFontFamilies.plusJakartaSans,
-                                color: Theme.of(context).shadowColor,
+                color: context.theme.shadowColor,
                               ),
                         ),
                       ),
@@ -127,16 +128,16 @@ class SettingsScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
-            color: Theme.of(context).shadowColor.withAlpha(50),
+            color: context.theme.shadowColor.withAlpha(50),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon),
         ),
-        title: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(title, style: context.textTheme.bodyLarge),
         subtitle: Text(
           subtitle,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Theme.of(context).shadowColor.withAlpha(100),
+          style: context.textTheme.bodySmall?.copyWith(
+            color: context.theme.shadowColor.withAlpha(100),
           ),
         ),
         trailing: trailing,

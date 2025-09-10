@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/themes/colors.dart';
 
 class CustomCheckBox extends StatelessWidget {
@@ -17,11 +18,11 @@ class CustomCheckBox extends StatelessWidget {
         height: 24,
         decoration: BoxDecoration(
           color: isSelected
-              ? Theme.of(context).highlightColor
+              ? context.theme.highlightColor
               : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-            color: isSelected ? Theme.of(context).highlightColor : Colors.grey,
+            color: isSelected ? context.theme.highlightColor : Colors.grey,
             width: 1,
           ),
         ),

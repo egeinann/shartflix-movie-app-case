@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 
 class CustomFilledButton extends StatelessWidget {
   final String text;
@@ -18,7 +19,7 @@ class CustomFilledButton extends StatelessWidget {
       height: 56,
      
       decoration: BoxDecoration(
-        color: Theme.of(context).highlightColor,
+        color: context.theme.highlightColor,
         borderRadius: BorderRadius.circular(16),
       ),
       child: ElevatedButton(

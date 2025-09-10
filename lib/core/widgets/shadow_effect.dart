@@ -13,7 +13,7 @@ class AppBackground {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF3F0306).withAlpha(150),
+                  Color(0xFF8D00000).withAlpha(120),
                   Colors.transparent,
                   
                 ],
@@ -24,13 +24,14 @@ class AppBackground {
         Visibility(
           visible: highLight,
           child: Container(
-            width: 100,
+            width: 80,
             height: 30,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
               boxShadow: [
                 BoxShadow(
                   spreadRadius: 80,
-                  blurRadius: 90,
+                  blurRadius: 60,
                   offset: Offset(0, -30),
                   color: Color(0xFFFF1B1B),
                 ),

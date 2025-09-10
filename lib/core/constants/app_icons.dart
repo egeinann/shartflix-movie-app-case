@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 
 class AppIcons {
   static const String arrow = 'assets/icons/Arrow.png';
@@ -20,16 +21,17 @@ class AppIcons {
   static const String facebook = 'assets/socialIcons/Facebook.png';
   static const String google = 'assets/socialIcons/Google.png';
 
-  static Widget icon(String path, {Color? color, double size = 24}) {
+  static Widget icon(String path, {Key? key, Color? color, double size = 24}) {
     return Builder(
+      key: key,
       builder: (context) {
-        final theme = Theme.of(context);
-        final isDark = theme.brightness == Brightness.dark;
+       
+        final isDark = context.theme.brightness == Brightness.dark;
 
         return ImageIcon(
           AssetImage(path),
           size: size,
-          color: color ?? (isDark ? null : Theme.of(context).iconTheme.color),
+          color: color ?? (isDark ? null : context.theme.iconTheme.color),
         );
       },
     );

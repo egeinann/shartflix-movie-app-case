@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
+import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
@@ -27,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
       // *** BAŞLAMA ***
       TweenSequenceItem(
         tween: Tween<Offset>(
-          begin: const Offset(5, 0),
+          begin: const Offset(0, -10),
           end: const Offset(0, 0),
         ).chain(CurveTween(curve: Curves.easeInOut)),
         weight: 1,
@@ -61,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: context.theme.scaffoldBackgroundColor,
       body: SlideTransition(
         position: _slideAnimation,
         child: Stack(
@@ -76,9 +78,11 @@ class _SplashScreenState extends State<SplashScreen>
                 children: [
                   Image.asset(AppImages.logo),
                   Text(
-                    "SHARTFLIX",
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Theme.of(context).shadowColor,
+                    "Sharflix",
+                    style: context.textTheme.labelMedium?.copyWith(
+                      color: context.theme.shadowColor,
+                      fontFamily: AppFontFamilies.plusJakartaSans,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ],

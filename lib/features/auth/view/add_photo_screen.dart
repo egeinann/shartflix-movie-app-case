@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
@@ -67,7 +68,7 @@ class AddPhotoScreen extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             "Profil Detayı",
-            style: Theme.of(context).textTheme.bodyLarge,
+            style: context.textTheme.bodyLarge,
           ),
         ),
       ],
@@ -96,7 +97,7 @@ class AddPhotoScreen extends StatelessWidget {
 
             child: Text(
               "Atla",
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: context.textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ),
@@ -117,7 +118,7 @@ class AddPhotoScreen extends StatelessWidget {
             width: 76,
             height: 76,
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withAlpha(50),
+              color: context.theme.primaryColor.withAlpha(50),
               borderRadius: BorderRadius.circular(24),
             ),
             child: AppIcons.icon(
@@ -125,10 +126,10 @@ class AddPhotoScreen extends StatelessWidget {
               color: Color(0xFFF8C6C6),
             ),
           ),
-          Text("Fotoğraf Yükle", style: Theme.of(context).textTheme.bodyLarge),
+          Text("Fotoğraf Yükle", style: context.textTheme.bodyLarge),
           Text(
             "Profil fotoğrafın için görsel yükleyebilirsin",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: context.textTheme.bodySmall,
           ),
           SizedBox(height: 20),
           CustomPaint(
@@ -138,7 +139,7 @@ class AddPhotoScreen extends StatelessWidget {
               height: 120,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: Theme.of(context).cardColor.withAlpha(100),
+                color: context.theme.cardColor.withAlpha(100),
               ),
               child: Center(child: AppIcons.icon(AppIcons.plus)),
             ),
