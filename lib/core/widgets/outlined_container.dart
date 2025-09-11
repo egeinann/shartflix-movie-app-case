@@ -12,7 +12,7 @@ Widget outlinedContainer(
   return ClipRRect(
     borderRadius: BorderRadius.circular(borderValue),
     child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(

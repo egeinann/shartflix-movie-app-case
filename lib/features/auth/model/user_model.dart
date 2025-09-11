@@ -18,8 +18,24 @@ class UserModel {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       email: json['email'] ?? '',
-      photoUrl: json['photoUrl'],
       password: password,
+      photoUrl: json['photoUrl'],
+    );
+  }
+
+  UserModel copyWith({
+    String? id,
+    String? name,
+    String? email,
+    String? password,
+    String? photoUrl,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 }

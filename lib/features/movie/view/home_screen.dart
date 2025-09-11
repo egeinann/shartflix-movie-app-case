@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +7,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
-import 'package:shartflix_movie_app_case/core/utils/update_poster_url.dart';
+import 'package:shartflix_movie_app_case/core/widgets/loading_lottie.dart';
 import 'package:shartflix_movie_app_case/core/widgets/movie/like_button.dart';
+import 'package:shartflix_movie_app_case/features/movie/model/movie_model.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_state.dart';
 
@@ -78,193 +80,71 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.vertical,
                   itemCount: state.hasReachedMax
                       ? movies.length
-                      : movies.length + 2,
+                      : movies.length + 1, // son index -> loading göstergesi
                   onPageChanged: (index) {
-                    final cubit = context.read<MovieCubit>();
-                    final state = cubit.state;
-
                     if (index >= movies.length - 1 &&
                         !state.hasReachedMax &&
                         !state.isPageLoading &&
                         !state.isLoading) {
-                      cubit.fetchMoviesByPage();
+                      // yeni 5 film fetch
+                      context.read<MovieCubit>().fetchMoviesByPage();
                     }
                   },
                   itemBuilder: (context, index) {
-                    if (index >= movies.length - 1) {
-                      return state.isPageLoading
-                          ? Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(12),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: CircularProgressIndicator(
-                                  color: context.theme.shadowColor,
-                                ),
-                              ),
-                            )
-                          : const SizedBox.shrink();
+                    if (index >= movies.length) {
+                      return Center(child: loadingLottie());
                     }
 
                     final movie = movies[index];
                     final posterUrl = movie.poster.isNotEmpty
-                        ? UpdatePosterurl.upgradePosterUrl(
-                            movie.poster,
-                            width: 1000,
-                          )
+                        ? movie.poster.replaceFirst('http://', 'https://')
                         : '';
-
+                    print('Poster URL: $posterUrl');
                     return Stack(
                       children: [
-                        SizedBox(
-                          height: 50.h,
-                          width: double.infinity,
-                          child: Image.network(
-                            posterUrl,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                color: Colors.white.withOpacity(0.4),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    color: Colors.grey,
-                                    size: 60,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                        movieImage(movie),
                         topOpacity(),
+                        bottomOpacity(),
                         Positioned(
-                          bottom: 20,
+                          bottom: 120,
                           left: 25,
                           right: 25,
-                          child: Row(
-                            spacing: 15,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              CircleAvatar(
-                                child: Image.asset(AppImages.logo_circle),
+                              LikeButton(
+                                movie: movie,
+                                screenSize: Size(5.w, 20.h),
                               ),
+                              Row(
+                                spacing: 15,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    child: Image.asset(AppImages.logo_circle),
+                                  ),
 
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      movie.title,
-                                      style: context.textTheme.bodyLarge
-                                          ?.copyWith(
-                                            fontFamily: AppFontFamilies
-                                                .instrumentSansBold,
-                                            fontWeight: FontWeight.w700,
-                                          ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        movieTitle(movie, context),
+                                        movieDescription(movie, context),
+                                      ],
                                     ),
-                                    Text.rich(
-                                      TextSpan(
-                                        text: movie.plot.length > 60
-                                            ? '${movie.plot.substring(0, 60)}... '
-                                            : movie.plot,
-                                        style: context.textTheme.bodyMedium
-                                            ?.copyWith(
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                        children: [
-                                          if (movie.plot.length > 60)
-                                            TextSpan(
-                                              text: 'Daha Fazlası',
-                                              style: context
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    fontFamily: AppFontFamilies
-                                                        .instrumentSansBold,
-                                                  ),
-                                              recognizer: TapGestureRecognizer()
-                                                ..onTap = () {
-                                                  showModalBottomSheet(
-                                                    context: context,
-                                                    backgroundColor:
-                                                        Colors.black87,
-                                                    shape: const RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.vertical(
-                                                            top:
-                                                                Radius.circular(
-                                                                  16,
-                                                                ),
-                                                          ),
-                                                    ),
-                                                    builder: (_) => Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                            16.0,
-                                                          ),
-                                                      child: SingleChildScrollView(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              movie.title,
-                                                              style: const TextStyle(
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                            const SizedBox(
-                                                              height: 12,
-                                                            ),
-                                                            Text(
-                                                              movie.plot,
-                                                              style:
-                                                                  const TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    color: Colors
-                                                                        .white70,
-                                                                    height: 1.5,
-                                                                  ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                            ),
-                                        ],
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                        LikeButton(movie: movie, screenSize: Size(5.w, 20.h)),
                       ],
                     );
                   },
                 ),
-                if (movies.isEmpty)
-                  Center(
-                    child: CircularProgressIndicator(
-                      color: context.theme.shadowColor,
-                    ),
-                  ),
+                if (movies.isEmpty) Center(child: loadingLottie()),
               ],
             );
           },
@@ -273,11 +153,109 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // *** MOVIE DESCRIPTION ***
+  Widget movieDescription(Movie movie, BuildContext context) {
+    bool isExpanded = false;
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return AnimatedSize(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: Text.rich(
+            TextSpan(
+              text: isExpanded || movie.plot.length <= 60
+                  ? movie.plot
+                  : '${movie.plot.substring(0, 60)}... ',
+              style: context.textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: context.textTheme.headlineMedium?.color?.withAlpha(150),
+              ),
+              children: [
+                if (movie.plot.length > 60)
+                  TextSpan(
+                    text: isExpanded ? ' Daha Az' : ' Daha Fazlası',
+                    style: context.textTheme.headlineMedium?.copyWith(
+                      fontFamily: AppFontFamilies.instrumentSansBold,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                  ),
+              ],
+            ),
+            maxLines: isExpanded ? null : 2,
+            overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+          ),
+        );
+      },
+    );
+  }
+
+  // *** MOVIE TITLE ***
+  Text movieTitle(Movie movie, BuildContext context) {
+    return Text(
+      movie.title,
+      style: context.textTheme.headlineLarge?.copyWith(
+        fontFamily: AppFontFamilies.instrumentSansBold,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+
+  // *** MOVIE IMAGE ***
+  SizedBox movieImage(Movie movie) {
+    return SizedBox(
+      height: 100.h,
+      width: double.infinity,
+      child: CachedNetworkImage(
+        imageUrl: movie.poster.isNotEmpty
+            ? movie.poster.replaceFirst('http://', 'https://')
+            : '',
+        fit: BoxFit.cover,
+        errorWidget: (context, url, error) => Container(
+          color: Colors.white.withAlpha(100),
+          child: const Center(
+            child: Icon(Icons.broken_image, color: Colors.grey, size: 60),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // *** TOP OPACITY ***
   Container topOpacity() {
     return Container(
       height: 20.h,
       width: double.infinity,
-      color: Colors.black.withOpacity(0.9),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.black, Colors.black.withAlpha(0)],
+        ),
+      ),
+    );
+  }
+
+  // *** BOTTOM OPACITY ***
+  Widget bottomOpacity() {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        height: 30.h,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.bottomCenter,
+            end: Alignment.topCenter,
+            colors: [Colors.black, Colors.black, Colors.black.withAlpha(0)],
+          ),
+        ),
+      ),
     );
   }
 }

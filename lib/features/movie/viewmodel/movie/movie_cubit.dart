@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shartflix_movie_app_case/core/services/movie_service.dart';
-import 'package:shartflix_movie_app_case/core/utils/update_poster_url.dart';
 
 import 'movie_state.dart';
 
@@ -27,12 +26,11 @@ Future<void> fetchMoviesByPage({bool reset = false}) async {
 
   try {
     final data = await movieServices.getMovies(reset: reset);
-    final cleanedMovies = data.movies.map((movie) {
-      final updatedPoster = movie.poster.isNotEmpty
-          ? UpdatePosterurl.upgradePosterUrl(movie.poster, width: 1000)
-          : '';
-      return movie.copyWith(poster: updatedPoster);
-    }).toList();
+final cleanedMovies = data.movies.map((movie) {
+        return movie.copyWith(
+          poster: movie.poster.isNotEmpty ? movie.poster : '',
+        );
+      }).toList();
 
     final movies = reset ? cleanedMovies : [...state.movies, ...cleanedMovies];
 

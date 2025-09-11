@@ -29,21 +29,29 @@ class AuthServices {
     } else {
       return {
         'success': false,
-        'error': decoded['response']?['message'] ?? 'Giriş başarısız'
+        'error': decoded['response']?['message'] ?? 'Giriş başarısız',
       };
     }
   }
 
   Future<Map<String, dynamic>> register(
-      String name, String email, String password) async {
+    String name,
+    String email,
+    String password,
+    String? photoUrl,
+  ) async {
     final url = Uri.parse('$baseUrl/user/register');
     try {
+      final body = {'name': name, 'email': email, 'password': password};
+      if (photoUrl != null && photoUrl.isNotEmpty) {
+        body['photoUrl'] = photoUrl; // foto ekleniyor
+      }
+
       final response = await http
           .post(
             url,
             headers: {'Content-Type': 'application/json'},
-            body: jsonEncode(
-                {'name': name, 'email': email, 'password': password}),
+            body: jsonEncode(body),
           )
           .timeout(const Duration(seconds: 10));
 
@@ -62,19 +70,19 @@ class AuthServices {
         return {
           'success': true,
           'user': userData,
-          'message': decoded['response']?['message'] ?? 'Kayıt başarılı'
+          'message': decoded['response']?['message'] ?? 'Kayıt başarılı',
         };
       } else {
         return {
           'success': false,
-          'error': decoded['response']?['message'] ?? 'Kayıt başarısız'
+          'error': decoded['response']?['message'] ?? 'Kayıt başarısız',
         };
       }
     } catch (e) {
       debugPrint('Register Error: $e');
       return {
         'success': false,
-        'error': 'Sunucuya bağlanılamadı: ${e.toString()}'
+        'error': 'Sunucuya bağlanılamadı: ${e.toString()}',
       };
     }
   }
@@ -100,7 +108,7 @@ class AuthServices {
     } else {
       return {
         'success': false,
-        'error': decoded['response']['message'] ?? 'Profil bilgisi alınamadı'
+        'error': decoded['response']['message'] ?? 'Profil bilgisi alınamadı',
       };
     }
   }

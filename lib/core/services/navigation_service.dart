@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
+import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/controller_screen.dart';
-import 'package:shartflix_movie_app_case/features/auth/view/add_photo_screen.dart';
+import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/settings_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/view/login_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/view/register_screen.dart';
@@ -54,7 +56,6 @@ class NavigationService {
       '/splash': (context) => const SplashScreen(),
       '/login': (context) => const LoginScreen(),
       '/register': (context) => const RegisterScreen(),
-      '/addphoto': (context) => const AddPhotoScreen(),
       '/controller': (context) => const ControllerScreen(),
       '/settings': (context) => const SettingsScreen(),
     };

@@ -9,6 +9,7 @@ import 'package:shartflix_movie_app_case/core/themes/themes.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/favoriteMovie/favorite_movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cubit.dart';
+import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_cubit.dart';
 import 'package:shartflix_movie_app_case/features/splash/splash_screen.dart';
 
 void main() {
@@ -19,6 +20,7 @@ void main() {
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthCubit(authServices)),
+        BlocProvider(create: (_) => PhotoCubit()),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => MovieCubit(movieServices: movieServices)),
         BlocProvider(

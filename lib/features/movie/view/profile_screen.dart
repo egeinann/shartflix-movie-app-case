@@ -8,7 +8,7 @@ import 'package:shartflix_movie_app_case/core/extensions/padding_extension.dart'
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shimmer_loading.dart';
-import 'package:shartflix_movie_app_case/features/auth/view/add_photo_screen.dart';
+import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/core/widgets/bottomsheet.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/favoriteMovie/favorite_movie_cubit.dart';
@@ -26,8 +26,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
+    
     context.read<AuthCubit>().fetchProfile();
-    context.read<FavoriteMovieCubit>().fetchFavorites(); // << Bunu ekledik
+    context.read<FavoriteMovieCubit>().fetchFavorites();
   }
 
   @override
@@ -57,6 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // *** FAVORITE MOVIES LIST ***
   Widget favoriteMovies() {
     return BlocBuilder<MovieCubit, MovieState>(
       builder: (context, movieState) {
@@ -164,9 +166,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 borderRadius: BorderRadius.circular(8),
                                 child: movie.poster.isNotEmpty
                                     ? Image.network(
-                                        movie.poster,
+                                        movie.poster.replaceFirst(
+                                          'http://',
+                                          'https://',
+                                        ),
                                         width: double.infinity,
-
                                         fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
@@ -282,9 +286,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // *** PROFIL BILGILERI ***
+  // *** PROFILE INFORMATION ***
   Row profileInformation(BuildContext context) {
     final authState = context.watch<AuthCubit>().state;
+    debugPrint(authState.user?.id);
+    debugPrint("foto ${authState.user?.photoUrl}");
+    // Burada kullanıcı adını print ediyoruz
+    print("Kullanıcı Adı: ${authState.user?.name ?? 'Kullanıcı yok'}");
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -337,6 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
+
                         Text(
                           "ID: ${authState.user?.id ?? 'null'}",
                           style: context.textTheme.bodyMedium?.copyWith(
@@ -353,12 +363,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              CupertinoPageRoute(builder: (context) => const AddPhotoScreen()),
-            );
-          },
+          onTap: () {},
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 10),
             decoration: BoxDecoration(

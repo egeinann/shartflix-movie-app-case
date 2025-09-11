@@ -12,9 +12,9 @@ import 'package:shartflix_movie_app_case/core/widgets/checkBox.dart';
 import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
-import 'package:shartflix_movie_app_case/features/auth/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart';
+import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -103,25 +103,25 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocProvider(
-        create: (_) => AuthCubit(AuthServices()),
-        child: BlocConsumer<AuthCubit, AuthState>(
+    final cubit = context.read<AuthCubit>();
+    return BlocProvider(
+      create: (_) => AuthCubit(AuthServices()),
+      child: Scaffold(
+        body: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            if (state.error != null) {
-              ScaffoldMessenger.of(
+            if (state.isSuccess && state.user != null) {
+              final authCubit = context.read<AuthCubit>();
+
+              Navigator.push(
                 context,
-              ).showSnackBar(SnackBar(content: Text(state.error!)));
-            }
-            if (state.user != null) {
-              Future.microtask(() {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (_) => const AddPhotoScreen()),
-                );
-              });
+                MaterialPageRoute(
+                  builder: (context) => AddPhotoScreen(cubit: authCubit),
+                ),
+              );
             }
           },
           builder: (context, state) {
+            // final cubit = context.read<AuthCubit>();
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               logoHeader(context),
-                              forms(),
+                              forms(cubit),
                               socialContainers(context),
                               footer(context),
                             ],
@@ -180,10 +180,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               splashFactory: NoSplash.splashFactory,
             ),
             onPressed: () => NavigationService().goBack(),
-            child: Text(
-              "Giriş Yap",
-              style: context.theme.textTheme.bodySmall,
-            ),
+            child: Text("Giriş Yap", style: context.theme.textTheme.bodySmall),
           ),
         ],
       ),
@@ -208,8 +205,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   }
 
   // *** TEXTFILEDS AND BUTTON AREA ***
-  SlideTransition forms() {
-    final cubit = context.read<AuthCubit>();
+  SlideTransition forms(AuthCubit cubit) {
     return SlideTransition(
       position: _formAnim,
       child: Padding(
@@ -222,7 +218,8 @@ class _RegisterScreenState extends State<RegisterScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.profile),
               controller: nameController,
-              hasError: false,
+              hasError:
+                  cubit.state.name.isEmpty, // nameError alanını kullanabilirsin
               hinttext: "Ad Soyad",
               lenght: 20,
               onChanged: cubit.nameChanged,
@@ -231,17 +228,18 @@ class _RegisterScreenState extends State<RegisterScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.mail),
               controller: emailController,
-              hasError: false,
+              hasError: cubit.state.emailError, // emailError
               hinttext: "E-Posta",
-              lenght: 20,
+              lenght: 30,
               onChanged: cubit.emailChanged,
             ),
+
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: passwordController,
-              hasError: false,
+              hasError: cubit.state.passwordError, // passwordError
               hinttext: "Şifre",
-              lenght: 20,
+              lenght: 18,
               showPasswordToggle: true,
               onChanged: cubit.passwordChanged,
             ),
@@ -250,7 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               controller: retryPasswordController,
               hasError: false,
               hinttext: "Şifre tekrar",
-              lenght: 20,
+              lenght: 18,
               showPasswordToggle: true,
             ),
             Row(
@@ -273,35 +271,27 @@ class _RegisterScreenState extends State<RegisterScreen>
                       children: [
                         TextSpan(
                           text: "Kullanıcı sözleşmesini",
-                          style: context.textTheme.bodySmall
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).shadowColor.withAlpha(120),
-                              ),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).shadowColor.withAlpha(120),
+                          ),
                         ),
                         TextSpan(
                           text: " okudum ve kabul ediyorum.",
-                          style: context.textTheme.bodySmall
-                              ?.copyWith(decoration: TextDecoration.underline),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                         TextSpan(
                           text: " Bu\n",
-                          style: context.textTheme.bodySmall
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).shadowColor.withAlpha(120),
-                              ),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).shadowColor.withAlpha(120),
+                          ),
                         ),
                         TextSpan(
                           text: "sözleşmeyi okuyarak devam ediniz lütfen.",
-                          style: context.textTheme.bodySmall
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).shadowColor.withAlpha(120),
-                              ),
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).shadowColor.withAlpha(120),
+                          ),
                         ),
                       ],
                     ),
@@ -315,9 +305,31 @@ class _RegisterScreenState extends State<RegisterScreen>
               child: CustomFilledButton(
                 text: "Kaydol",
                 onPressed: () {
-                  isChecked
-                      ? cubit.register()
-                      : debugPrint("sözleşmeyi kabul et");
+                  debugPrint("Cubit state name: ${cubit.state.name}");
+                  debugPrint("Cubit state email: ${cubit.state.email}");
+                  debugPrint("Cubit state password: ${cubit.state.password}");
+                  if (!isChecked) {
+                    debugPrint("Sözleşmeyi kabul et");
+                    return;
+                  }
+
+                  if (cubit.validateInputs(
+                    name: nameController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                    retryPassword: retryPasswordController.text,
+                  )) {
+                    final authCubit = context.read<AuthCubit>();
+
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => AddPhotoScreen(cubit: authCubit),
+                      ),
+                    );
+                  } else {
+                    debugPrint("Inputlar hatalı");
+                  }
                 },
               ),
             ),

@@ -25,10 +25,7 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 spacing: 50,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  headerTtile(context),
-                  settings(context),
-                ],
+                children: [headerTtile(context), settings(context)],
               ),
             ),
           ),
@@ -40,76 +37,69 @@ class SettingsScreen extends StatelessWidget {
   // *** HEADER BAŞLIK ***
   Padding headerTtile(BuildContext context) {
     return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => NavigationService().goBack(),
-                        child: Icon(Icons.keyboard_backspace_sharp, size: 30),
-                      ),
-                      shaderMaskWidget(
-                        context,
-                        Text(
-                          "AYARLAR",
-              style: context.textTheme.labelLarge
-                              ?.copyWith(
-                                fontFamily: AppFontFamilies.plusJakartaSans,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () => NavigationService().goBack(),
+            child: Icon(Icons.keyboard_backspace_sharp, size: 30),
+          ),
+          shaderMaskWidget(
+            context,
+            Text(
+              "AYARLAR",
+              style: context.textTheme.labelLarge?.copyWith(
+                fontFamily: AppFontFamilies.plusJakartaSans,
                 color: context.theme.shadowColor,
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // *** SETTINGS LIST ***
   Expanded settings(BuildContext context) {
     return Expanded(
-                  child: ListView(
-                    
-                    children: [
-                      _buildSettingsTile(
-                        context,
-                        icon: Icons.invert_colors_outlined,
-                        title: "Tema",
-                        subtitle: "Göz yorgunluğunu önler",
-                        trailing: BlocBuilder<ThemeCubit, ThemeMode>(
-                          builder: (context, themeMode) {
-                            return CupertinoSwitch(
-                              value: themeMode == ThemeMode.dark,
-                              onChanged: (_) {
-                                context.read<ThemeCubit>().toggleTheme();
-                              },
-                            );
-                          },
-                        ),
-                        onTap: () {
-                          context.read<ThemeCubit>().toggleTheme();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      _buildSettingsTile(
-                        context,
-                        icon: Icons.text_fields_rounded,
-                        title: "Dil",
-                        subtitle: "Türkçe/İngilizce",
-                        trailing: BlocBuilder<ThemeCubit, ThemeMode>(
-                          builder: (context, themeMode) {
-                            return CupertinoSwitch(
-                              value: false,
-                              onChanged: (_) {
-                                
-                              },
-                            );
-                          },
-                        ),
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
+      child: ListView(
+        children: [
+          _buildSettingsTile(
+            context,
+            icon: Icons.invert_colors_outlined,
+            title: "Tema",
+            subtitle: "Göz yorgunluğunu önler",
+            trailing: BlocBuilder<ThemeCubit, ThemeMode>(
+              builder: (context, themeMode) {
+                return CupertinoSwitch(
+                  value: themeMode == ThemeMode.dark,
+                  onChanged: (_) {
+                    context.read<ThemeCubit>().toggleTheme();
+                  },
                 );
+              },
+            ),
+            onTap: () {
+              context.read<ThemeCubit>().toggleTheme();
+            },
+          ),
+          SizedBox(height: 10),
+          _buildSettingsTile(
+            context,
+            icon: Icons.text_fields_rounded,
+            title: "Dil",
+            subtitle: "Türkçe/İngilizce",
+            trailing: BlocBuilder<ThemeCubit, ThemeMode>(
+              builder: (context, themeMode) {
+                return CupertinoSwitch(value: false, onChanged: (_) {});
+              },
+            ),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
   }
 
   // *** SETTING MODEL ***

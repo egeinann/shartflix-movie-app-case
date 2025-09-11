@@ -9,6 +9,7 @@ import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/loading_lottie.dart';
 import 'package:shartflix_movie_app_case/core/widgets/social_container.dart';
 import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
@@ -140,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen>
                             Column(
                               children: [
                                 logoHeader(context),
+                              
                                 forms(context, state),
                                 socialContainers(context),
                                 footer(context),
@@ -245,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen>
             SizedBox(
               width: 100.w,
               child: state.isLoading
-                  ? const CircularProgressIndicator(color: Colors.white)
+                  ? loadingLottie()
                   : CustomFilledButton(
                       text: "Giriş Yap",
                       onPressed: () async {

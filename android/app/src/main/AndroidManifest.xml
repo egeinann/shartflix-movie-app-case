@@ -1,4 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Kamera İzni -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Eski Android Sürümleri İçin galeri Erişimi -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- Android 13 ve Üzeri İçin galeri Erişimi -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
     <application
         android:label="Shartflix"
         android:name="${applicationName}"

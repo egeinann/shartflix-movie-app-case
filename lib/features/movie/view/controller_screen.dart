@@ -15,7 +15,7 @@ class ControllerScreen extends StatefulWidget {
 
 class _ControllerScreenState extends State<ControllerScreen> {
   int selectedIndex = 0;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,15 +58,13 @@ class _ControllerScreenState extends State<ControllerScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: selectedIndex == 1
-                  ? [
-                      context.theme.highlightColor, context.theme.primaryColor,
-                    ]
+                  ? [context.theme.highlightColor, context.theme.primaryColor]
                   : [Colors.transparent, Colors.transparent],
             ),
 
             border: Border.all(
               color: selectedIndex == 0
-                  ? context.theme.shadowColor.withAlpha(50)
+                  ? Colors.white.withAlpha(50)
                   : Colors.transparent,
               width: 1,
             ),
@@ -78,20 +76,18 @@ class _ControllerScreenState extends State<ControllerScreen> {
             children: [
               AppIcons.icon(
                 selectedIndex == 0 ? AppIcons.profile : AppIcons.profileFill,
-                color: selectedIndex == 0
-                    ? context.shadowColor
-                    : Colors.white,
+                color: Colors.white,
               ),
               SizedBox(width: 5),
               Text(
                 "Profile",
-                style: TextStyle(
+                style: context.textTheme.bodyLarge?.copyWith(
+             
                   fontWeight: FontWeight.w500,
-                  fontFamily: AppFontFamilies.instrumentSansRegular,
-                  color: selectedIndex == 0
-                      ? context.shadowColor
-                      : Colors.white,
-                ),
+                  fontFamily: AppFontFamilies.instrumentSansMedium,
+                  color: Colors.white,
+                  fontSize: 14,
+                )
               ),
             ],
           ),
@@ -114,9 +110,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: selectedIndex == 0
-                  ? [
-                      context.theme.highlightColor, context.theme.primaryColor,
-                    ]
+                  ? [context.theme.highlightColor, context.theme.primaryColor]
                   : [Colors.transparent, Colors.transparent],
             ),
 
@@ -135,18 +129,19 @@ class _ControllerScreenState extends State<ControllerScreen> {
               AppIcons.icon(
                 selectedIndex == 1 ? AppIcons.home : AppIcons.homeFill,
                 color: selectedIndex == 1
-                    ? context.shadowColor
+                    ? context.theme.shadowColor
                     : Colors.white,
               ),
               SizedBox(width: 5),
               Text(
-                "Home",
-                style: TextStyle(
+                "Ana Sayfa",
+                style: context.textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w500,
-                  fontFamily: AppFontFamilies.instrumentSansRegular,
+                  fontFamily: AppFontFamilies.instrumentSansMedium,
                   color: selectedIndex == 1
-                      ? context.shadowColor
+                      ? context.theme.shadowColor
                       : Colors.white,
+                  fontSize: 14,
                 ),
               ),
             ],
@@ -155,8 +150,4 @@ class _ControllerScreenState extends State<ControllerScreen> {
       ),
     );
   }
-}
-
-extension on BuildContext {
-  get shadowColor => null;
 }

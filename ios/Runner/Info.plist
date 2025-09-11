@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Profil fotoğrafınızı çekmek için kameraya erişime ihtiyacımız var</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Profil fotoğrafınızı seçmek için fotoğraf galerinize erişime ihtiyacımız var</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Çektiğiniz fotoğrafı kaydedebilmek için galerinize erişime ihtiyacımız var</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
