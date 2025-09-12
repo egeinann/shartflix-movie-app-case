@@ -7,7 +7,8 @@
 
     <!-- Android 13 ve Üzeri İçin galeri Erişimi -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
+    <!-- internet Erişimi -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Shartflix"
         android:name="${applicationName}"

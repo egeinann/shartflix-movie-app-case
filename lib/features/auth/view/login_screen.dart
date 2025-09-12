@@ -111,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen>
               debugPrint(state.error);
             }
             if (state.user != null) {
-              NavigationService().navigateTo('/controller');
+              NavigationService().clearStackAndGo('/controller');
             }
           },
           builder: (context, state) {
