@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shartflix_movie_app_case/features/movie/model/movie_model.dart';
@@ -15,7 +16,7 @@ class FavouriteMovie extends StatelessWidget {
     if (favorites.isEmpty) {
       return Center(
         child: Text(
-          'Favori film bulunamadı.',
+          'Favorite movie not found.'.tr(),
           style: TextStyle(color: Colors.grey),
         ),
       );
@@ -34,9 +35,9 @@ class FavouriteMovie extends StatelessWidget {
     }).toList();
 
     if (updatedFavorites.isEmpty) {
-      return const Center(
+          return Center(
         child: Text(
-          'Favori film bulunamadı.',
+              'Favorite movie not found.'.tr(),
           style: TextStyle(color: Colors.grey),
         ),
       );

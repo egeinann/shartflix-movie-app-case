@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -189,14 +190,14 @@ class _LoginScreenState extends State<LoginScreen>
         children: [
           Image.asset(AppImages.logo),
           Text(
-            "Giriş yap",
+            "Login".tr(),
             style: context.textTheme.labelMedium?.copyWith(
               color: context.theme.shadowColor,
             ),
           ),
           SizedBox(height: 10),
           Text(
-            "Kullanıcı bilgilerinle giriş yap",
+            "Log in with your user information".tr(),
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w200),
@@ -229,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen>
                 });
                 cubit.emailChanged(value);
               },
-              hinttext: "E-Posta",
+              hinttext: "Email".tr(),
               lenght: 50,
             ),
 
@@ -245,7 +246,7 @@ class _LoginScreenState extends State<LoginScreen>
                 });
                 cubit.passwordChanged(value);
               },
-              hinttext: "Şifre",
+              hinttext: "Password".tr(),
               lenght: 20,
             ),
 
@@ -254,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen>
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                 child: Text(
-                  "Şifreyi Unuttum",
+                  "Forgot Password".tr(),
                   style: context.theme.textTheme.bodySmall?.copyWith(
                     fontFamily: AppFontFamilies.instrumentSansSemiBold,
                     fontWeight: FontWeight.w600,
@@ -266,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen>
             SizedBox(
               width: 100.w,
               child: CustomFilledButton(
-                text: "Giriş Yap",
+                text: "Giriş Yap".tr(),
                 onPressed: () async {
                   setState(() {
                     emailError = !emailController.text.contains('@');
@@ -302,7 +303,7 @@ class _LoginScreenState extends State<LoginScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Bir hesabın yok mu?",
+            "Don't have an account?".tr(),
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
@@ -315,7 +316,7 @@ class _LoginScreenState extends State<LoginScreen>
             onPressed: () {
               NavigationService().navigateTo('/register');
             },
-            child: Text("Kayıt Ol", style: context.textTheme.bodySmall),
+            child: Text("Register".tr(), style: context.textTheme.bodySmall),
           ),
         ],
       ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
@@ -105,7 +106,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           Padding(
             padding: const EdgeInsets.only(top: 4, left: 12),
             child: Text(
-              "Hatalı giriş. Lütfen Tekrar dene",
+              "Incorrect entry. Please try again".tr(),
               style: context.theme.textTheme.bodySmall?.copyWith(
                 color: Color(0xFFF47171),
                 fontWeight: FontWeight.w400,

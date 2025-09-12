@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
@@ -72,18 +73,18 @@ void showBottomSheetApp(BuildContext context) {
                       spacing: 20,
                       children: [
                         Text(
-                          "Sınırlı Teklif",
-                          style: context.textTheme.bodyLarge
-                              ?.copyWith(
-                                fontFamily:
-                                    AppFontFamilies.instrumentSansSemiBold,
-                                fontWeight: FontWeight.w700,
-                              ),
+                          "Limited Offer".tr(),
+                          style: context.textTheme.bodyLarge?.copyWith(
+                            fontFamily: AppFontFamilies.instrumentSansSemiBold,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                         Text(
-                          "Jeton paketin’ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!",
-                          style: context.textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w400),
+                          "Earn bonuses and unlock new levels by choosing the Coin Pack!"
+                              .tr(),
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         outlinedContainer(
@@ -93,13 +94,12 @@ void showBottomSheetApp(BuildContext context) {
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: Text(
-                                  "Alacağınız Bonuslar",
-                                  style: context.textTheme.bodyMedium
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: AppFontFamilies
-                                            .instrumentSansMedium,
-                                      ),
+                                  "Bonuses You Will Receive".tr(),
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily:
+                                        AppFontFamilies.instrumentSansMedium,
+                                  ),
                                 ),
                               ),
                               Row(
@@ -107,22 +107,22 @@ void showBottomSheetApp(BuildContext context) {
                                   bonusFeatures(
                                     context,
                                     AppPremiumIcons.premiumAccountIcon,
-                                    "Premium\nHesap",
+                                    "Premium\nAccount".tr(), // Premium Hesap
                                   ),
                                   bonusFeatures(
                                     context,
                                     AppPremiumIcons.moreMatchIcon,
-                                    "Daha\nFazla Eşleşme",
+                                    "More\nMatches".tr(), // Daha Fazla Eşleşme
                                   ),
                                   bonusFeatures(
                                     context,
                                     AppPremiumIcons.featuredIcon,
-                                    "Öne\nÇıkanlar",
+                                    "Featured".tr(), // Öne Çıkanlar
                                   ),
                                   bonusFeatures(
                                     context,
                                     AppPremiumIcons.moreLikesIcon,
-                                    "Daha\nFazla Beğeni",
+                                    "More\nLikes".tr(), // Daha Fazla Beğeni
                                   ),
                                 ],
                               ),
@@ -132,13 +132,11 @@ void showBottomSheetApp(BuildContext context) {
                         Padding(
                           padding: const EdgeInsets.all(5),
                           child: Text(
-                            "Kilidi açmak için bir jeton paketi seçin",
-                            style: context.textTheme.bodyMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily:
-                                      AppFontFamilies.instrumentSansMedium,
-                                ),
+                            "Select a coin pack to unlock".tr(),
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontFamily: AppFontFamilies.instrumentSansMedium,
+                            ),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -186,7 +184,7 @@ void showBottomSheetApp(BuildContext context) {
                         SizedBox(
                           width: 100.w,
                           child: CustomFilledButton(
-                            text: "Tüm Jetonları Gör",
+                            text: "See All Tokens".tr(),
                             onPressed: () {},
                           ),
                         ),
@@ -296,7 +294,7 @@ Widget priceContainer(
                     ),
                   ),
                   Text(
-                    "Jeton",
+                    "Token".tr(),
                     style: context.textTheme.headlineMedium?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansMedium,
                       fontWeight: FontWeight.w500,
@@ -319,13 +317,12 @@ Widget priceContainer(
 
                   FittedBox(
                     child: Text(
-                      "Başına haftalık",
+                      "Per week".tr(),
                       textAlign: TextAlign.center,
-                      style: context.textTheme.headlineMedium
-                          ?.copyWith(
-                            fontFamily: AppFontFamilies.instrumentSansRegular,
-                            fontWeight: FontWeight.w500,
-                          ),
+                      style: context.textTheme.headlineMedium?.copyWith(
+                        fontFamily: AppFontFamilies.instrumentSansRegular,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,7 +30,7 @@ class AddPhotoScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Profil Detayı",
+                    "Profile Details".tr(),
                     style: context.textTheme.bodyLarge?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansSemiBold,
                       fontWeight: FontWeight.w600,
@@ -64,7 +65,7 @@ class AddPhotoScreen extends StatelessWidget {
                   SizedBox(
                     width: double.infinity,
                     child: CustomFilledButton(
-                      text: "Devam Et",
+                      text: "Next".tr(),
                       onPressed: (photoUrl != null && photoUrl.isNotEmpty)
                           ? () {
                               NavigationService().clearStackAndGo(
@@ -97,7 +98,7 @@ class AddPhotoScreen extends StatelessWidget {
               child: SizedBox(
                 width: 100.w,
                 child: Text(
-                  "Atla",
+                  "Skip".tr(),
                   style: context.textTheme.bodyMedium?.copyWith(
                     fontFamily: AppFontFamilies.instrumentSansSemiBold,
                     fontWeight: FontWeight.w600,
@@ -156,7 +157,7 @@ class AddPhotoScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                "Fotoğraf Yükle",
+                "Upload Photo".tr(),
                 style: context.textTheme.titleLarge?.copyWith(
                   fontFamily: AppFontFamilies.instrumentSansBold,
                   fontWeight: FontWeight.w700,
@@ -164,7 +165,7 @@ class AddPhotoScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               Text(
-                "Profil fotoğrafın için görsel yükleyebilirsin",
+                "You can upload an image for your profile photo".tr(),
                 style: context.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.w400,
                 ),
@@ -243,12 +244,15 @@ class AddPhotoScreen extends StatelessWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: Text('Galeriden Seç', style: context.textTheme.bodyLarge),
+              title: Text(
+                'Select from Gallery'.tr(),
+                style: context.textTheme.bodyLarge,
+              ),
               onTap: () => Navigator.pop(context, ImageSource.gallery),
             ),
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: Text('Kamera ile Çek', style: context.textTheme.bodyLarge),
+              title: Text('Camera'.tr(), style: context.textTheme.bodyLarge),
               onTap: () => Navigator.pop(context, ImageSource.camera),
             ),
             SizedBox(height: 5.h),

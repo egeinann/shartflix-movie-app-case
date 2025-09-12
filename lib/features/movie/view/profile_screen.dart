@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -129,7 +130,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: shaderMaskWidget(
                 context,
                 Text(
-                  'Favori film bulunamadı.',
+                  'No favorite movies found.'.tr(),
                   style: context.textTheme.bodyLarge,
                 ),
               ),
@@ -144,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 12, left: 20),
                 child: Text(
-                  'Beğendiklerim',
+                  'My Favorites'.tr(),
                   style: context.textTheme.bodyLarge?.copyWith(
                     fontFamily: AppFontFamilies.instrumentSansSemiBold,
                     fontWeight: FontWeight.w600,
@@ -250,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Row(
           children: [
             Text(
-              "Profil",
+              "Profile".tr(),
               style: context.textTheme.bodyLarge?.copyWith(
                 fontFamily: AppFontFamilies.instrumentSansBold,
               ),
@@ -282,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 AppIcons.icon(AppIcons.gem, size: 20, color: Colors.white),
                 Text(
-                  "Sınırlı Teklif",
+                  "Limited Offer".tr(),
                   style: context.textTheme.headlineSmall?.copyWith(
                     fontFamily: AppFontFamilies.instrumentSansSemiBold,
                     fontWeight: FontWeight.w600,
@@ -366,7 +367,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               spacing: 5,
                               children: [
                                 Text(
-                                  authState.user?.name ?? "Kullanıcı",
+                                  authState.user?.name ?? "User".tr(),
                                   style: context.textTheme.bodyMedium?.copyWith(
                                     fontWeight: FontWeight.w600,
                                     fontFamily:
@@ -376,7 +377,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   maxLines: 1,
                                 ),
                                 Text(
-                                  "ID: ${authState.user?.id ?? 'null'}",
+                                  "ID: ${authState.user?.id ?? 'null'.tr()}",
                                   style: context.textTheme.bodyMedium?.copyWith(
                                     fontFamily:
                                         AppFontFamilies.instrumentSansMedium,
@@ -407,7 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ListTile(
                             leading: const Icon(Icons.camera_alt),
                             title: Text(
-                              'Kamera',
+                              'Camera'.tr(),
                               style: context.textTheme.bodyLarge,
                             ),
                             onTap: () =>
@@ -416,7 +417,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ListTile(
                             leading: const Icon(Icons.photo),
                             title: Text(
-                              'Galeriden Seç',
+                              'Select from Gallery'.tr(),
                               style: context.textTheme.bodyLarge,
                             ),
                             onTap: () =>
@@ -469,7 +470,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      "Fotoğraf Ekle",
+                      "Add Photo".tr(),
                       style: context.textTheme.bodySmall?.copyWith(
                         fontFamily: AppFontFamilies.instrumentSansSemiBold,
                         fontWeight: FontWeight.w600,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -187,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Hesabın var mı?",
+            "Do you have an account?".tr(),
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(color: Colors.grey.shade600),
@@ -198,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               splashFactory: NoSplash.splashFactory,
             ),
             onPressed: () => NavigationService().goBack(),
-            child: Text("Giriş Yap", style: context.theme.textTheme.bodySmall),
+            child: Text("Login".tr(), style: context.theme.textTheme.bodySmall),
           ),
         ],
       ),
@@ -237,7 +238,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               prefixIcon: AppIcons.icon(AppIcons.profile),
               controller: nameController,
               hasError: cubit.state.nameError,
-              hinttext: "Ad Soyad",
+              hinttext: "Name Surname".tr(),
               lenght: 20,
               onChanged: (val) {
                 cubit.nameChanged(val);
@@ -249,7 +250,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               prefixIcon: AppIcons.icon(AppIcons.mail),
               controller: emailController,
               hasError: cubit.state.emailError,
-              hinttext: "E-Posta",
+              hinttext: "Email".tr(),
               lenght: 30,
               onChanged: (val) {
                 cubit.emailChanged(val);
@@ -261,7 +262,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: passwordController,
               hasError: cubit.state.passwordError,
-              hinttext: "Şifre",
+              hinttext: "Password".tr(),
               lenght: 18,
               showPasswordToggle: true,
               onChanged: (val) {
@@ -277,7 +278,7 @@ class _RegisterScreenState extends State<RegisterScreen>
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: retryPasswordController,
               hasError: cubit.state.retryPasswordError,
-              hinttext: "Şifre tekrar",
+              hinttext: "Retry password".tr(),
               lenght: 18,
               showPasswordToggle: true,
               onChanged: (val) {
@@ -306,7 +307,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: "Kullanıcı sözleşmesini",
+                          text: "User agreement".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: showAgreementError
                                 ? Colors.red
@@ -314,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         TextSpan(
-                          text: " okudum ve kabul ediyorum.",
+                          text: " I have read and agree to it.".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             decoration: TextDecoration.underline,
                             color: showAgreementError
@@ -323,7 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         TextSpan(
-                          text: " Bu\n",
+                          text: " Please\n".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: showAgreementError
                                 ? Colors.red
@@ -331,7 +332,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         TextSpan(
-                          text: "sözleşmeyi okuyarak devam ediniz lütfen.",
+                          text: "read the agreement before proceeding.".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: showAgreementError
                                 ? Colors.red
@@ -348,7 +349,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             SizedBox(
               width: 100.w,
               child: CustomFilledButton(
-                text: "Kaydol",
+                text: "Register".tr(),
                 onPressed: () {
                   if (!isChecked) {
                     setState(() {
@@ -387,14 +388,14 @@ class _RegisterScreenState extends State<RegisterScreen>
         children: [
           Image.asset(AppImages.logo),
           Text(
-            "Hesap oluştur",
+            "Register".tr(),
             style: context.textTheme.labelMedium?.copyWith(
               color: context.theme.shadowColor,
             ),
           ),
           SizedBox(height: 10),
           Text(
-            "Kullanıcı bilgilerini girerek kaydol",
+            "Sign up by entering your user information".tr(),
             style: Theme.of(
               context,
             ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w200),

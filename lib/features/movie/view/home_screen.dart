@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -67,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (movies.isEmpty && !state.isLoading) {
               return Center(
                 child: Text(
-                  "Film bulunamadı",
+                  "Movie not found".tr(),
                   style: TextStyle(color: Colors.redAccent),
                 ),
               );
@@ -174,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 if (movie.plot.length > 60)
                   TextSpan(
-                    text: isExpanded ? ' Daha Az' : ' Daha Fazlası',
+                    text: isExpanded ? ' Less'.tr() : ' More'.tr(),
                     style: context.textTheme.headlineMedium?.copyWith(
                       fontFamily: AppFontFamilies.instrumentSansBold,
                     ),

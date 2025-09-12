@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shartflix_movie_app_case/features/settings/viewmodel/language_cubit.dart';
 import 'package:shartflix_movie_app_case/features/settings/viewmodel/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/padding_extension.dart';
@@ -48,7 +50,7 @@ class SettingsScreen extends StatelessWidget {
           shaderMaskWidget(
             context,
             Text(
-              "AYARLAR",
+              "SETTINGS".tr(),
               style: context.textTheme.labelLarge?.copyWith(
                 fontFamily: AppFontFamilies.plusJakartaSans,
                 color: context.theme.shadowColor,
@@ -68,8 +70,8 @@ class SettingsScreen extends StatelessWidget {
           _buildSettingsTile(
             context,
             icon: Icons.invert_colors_outlined,
-            title: "Tema",
-            subtitle: "Göz yorgunluğunu önler",
+            title: "Theme".tr(),
+            subtitle: "Prevents eye fatiguer".tr(),
             trailing: BlocBuilder<ThemeCubit, ThemeMode>(
               builder: (context, themeMode) {
                 return CupertinoSwitch(
@@ -88,11 +90,21 @@ class SettingsScreen extends StatelessWidget {
           _buildSettingsTile(
             context,
             icon: Icons.text_fields_rounded,
-            title: "Dil",
-            subtitle: "Türkçe/İngilizce",
-            trailing: BlocBuilder<ThemeCubit, ThemeMode>(
-              builder: (context, themeMode) {
-                return CupertinoSwitch(value: false, onChanged: (_) {});
+            title: "Language".tr(),
+            subtitle: "Turkish/English".tr(),
+            trailing: BlocBuilder<LanguageCubit, Locale>(
+              builder: (context, locale) {
+                return CupertinoSwitch(
+                  value: locale.languageCode == 'tr', // Türkçe ise true
+                  onChanged: (_) {
+                    final cubit = context.read<LanguageCubit>();
+                    // Switch değiştiğinde dili değiştir
+                    cubit.changeLanguage(
+                      locale.languageCode == 'tr' ? Locale('en') : Locale('tr'),
+                      context,
+                    );
+                  },
+                );
               },
             ),
             onTap: () {},
