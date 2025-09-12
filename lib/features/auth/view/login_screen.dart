@@ -141,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen>
                             Column(
                               children: [
                                 logoHeader(context),
-                              
+
                                 forms(context, state),
                                 socialContainers(context),
                                 footer(context),
@@ -203,12 +203,11 @@ class _LoginScreenState extends State<LoginScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.mail),
               controller: emailController,
-              hasError: emailError,
-
+              hasError: emailError || state.emailError,
               onChanged: (value) {
                 setState(() {
+                  // Kullanıcı yazmaya başladığında kırmızı hatayı kaldır
                   emailError = false;
-                  emailError = !value.contains('@');
                 });
                 cubit.emailChanged(value);
               },
@@ -219,10 +218,11 @@ class _LoginScreenState extends State<LoginScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: passwordController,
-              hasError: passwordError,
+              hasError: passwordError || state.passwordError,
               showPasswordToggle: true,
               onChanged: (value) {
                 setState(() {
+                  // Kullanıcı yazmaya başladığında kırmızı hatayı kaldır
                   passwordError = false;
                 });
                 cubit.passwordChanged(value);
@@ -230,6 +230,7 @@ class _LoginScreenState extends State<LoginScreen>
               hinttext: "Şifre",
               lenght: 20,
             ),
+
             Align(
               alignment: Alignment.centerRight,
               child: Padding(
@@ -251,17 +252,23 @@ class _LoginScreenState extends State<LoginScreen>
                   : CustomFilledButton(
                       text: "Giriş Yap",
                       onPressed: () async {
-                        // Hataları belirle
                         setState(() {
                           emailError = !emailController.text.contains('@');
                           passwordError = passwordController.text.isEmpty;
                         });
 
-                        // Hata varsa işlemi durdur
                         if (emailError || passwordError) return;
 
-                        // Hata yoksa Cubit login
+                        // Backend login
                         await cubit.login();
+
+                        // Eğer backend hata dönerse TextField hatalarını göster
+                        if (cubit.state.error != null) {
+                          setState(() {
+                            emailError = true;
+                            passwordError = true;
+                          });
+                        }
                       },
                     ),
             ),
@@ -292,9 +299,7 @@ class _LoginScreenState extends State<LoginScreen>
             onPressed: () {
               NavigationService().navigateTo('/register');
             },
-            child: Text(
-              "Kayıt Ol", style: context.textTheme.bodySmall,
-            ),
+            child: Text("Kayıt Ol", style: context.textTheme.bodySmall),
           ),
         ],
       ),

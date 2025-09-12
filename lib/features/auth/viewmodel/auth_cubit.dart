@@ -8,18 +8,15 @@ import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart
 class AuthCubit extends Cubit<AuthState> {
   final AuthServices _authServices;
   AuthCubit(this._authServices) : super(AuthState());
-
+  
   void emailChanged(String email) => emit(state.copyWith(email: email));
   void passwordChanged(String password) =>
       emit(state.copyWith(password: password));
   void nameChanged(String name) => emit(state.copyWith(name: name));
 
-  String? tempPhotoUrl;
-
+  // login giirş
   Future<void> login() async {
     validateFields();
-
-    if (!canSubmit()) return; // Field error varsa API çağrısını yapma
 
     emit(state.copyWith(isLoading: true, error: null));
 
@@ -37,10 +34,12 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // update user
   void updateUser(UserModel user) {
     emit(state.copyWith(user: user));
   }
 
+  // register işlemi
   Future<void> register() async {
     final emailError = state.email.isEmpty || !state.email.contains('@');
     final passwordError = state.password.isEmpty || state.password.length < 6;
@@ -95,6 +94,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // profili getir
   Future<void> fetchProfile() async {
     emit(state.copyWith(isSuccess: false, isLoading: true, error: null));
     try {
@@ -117,17 +117,50 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  void validateFields() {
-    bool eError = state.email.isEmpty;
-    bool pError = state.password.isEmpty;
+  // input alanları kontrolü
+  void validateFields({String? retryPassword}) {
+    final nameError = state.name.isEmpty;
+    final emailError = !state.email.contains('@');
+    final passwordError = state.password.length < 6;
+    final retryPasswordError =
+        retryPassword != null && retryPassword != state.password;
 
-    emit(state.copyWith(emailError: eError, passwordError: pError));
+    emit(
+      state.copyWith(
+        nameError: nameError,
+        emailError: emailError,
+        passwordError: passwordError,
+        retryPasswordError: retryPasswordError,
+      ),
+    );
   }
 
-  bool canSubmit() {
-    return !state.emailError && !state.passwordError;
+  // hata sonra input alanları temizliği
+  void clearErrorIfValid({
+    String? name,
+    String? email,
+    String? password,
+    String? retryPassword,
+  }) {
+    emit(
+      state.copyWith(
+        nameError: name != null ? name.isEmpty : state.nameError,
+        emailError: email != null
+            ? !email.contains('@')
+                  ? true
+                  : false
+            : state.emailError,
+        passwordError: password != null
+            ? password.length < 6
+            : state.passwordError,
+        retryPasswordError: (retryPassword != null && password != null)
+            ? retryPassword != password
+            : state.retryPasswordError,
+      ),
+    );
   }
 
+  // hat ainputları
   bool validateInputs({
     required String name,
     required String email,

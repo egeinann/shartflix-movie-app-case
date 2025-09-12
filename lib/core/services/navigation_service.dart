@@ -1,6 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
-import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/controller_screen.dart';
 import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/settings_screen.dart';

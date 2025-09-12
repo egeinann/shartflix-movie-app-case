@@ -9,11 +9,13 @@ class AuthState {
   final String name;
   final bool isSuccess;
 
-  // Yeni alanlar
+  // Hata alanları
   final bool emailError;
   final bool passwordError;
+  final bool nameError; // Yeni eklendi
+  final bool retryPasswordError; // Yeni eklendi
 
-  // Fotoğraf URL'i eklendi
+  // Fotoğraf URL'i
   final String? photoUrl;
 
   AuthState({
@@ -26,7 +28,9 @@ class AuthState {
     this.isSuccess = false,
     this.emailError = false,
     this.passwordError = false,
-    this.photoUrl, 
+    this.nameError = false, // Default false
+    this.retryPasswordError = false, // Default false
+    this.photoUrl,
   });
 
   AuthState copyWith({
@@ -39,7 +43,9 @@ class AuthState {
     bool? isSuccess,
     bool? emailError,
     bool? passwordError,
-    String? photoUrl, 
+    bool? nameError,
+    bool? retryPasswordError,   
+    String? photoUrl,
   }) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
@@ -51,7 +57,9 @@ class AuthState {
       isSuccess: isSuccess ?? this.isSuccess,
       emailError: emailError ?? this.emailError,
       passwordError: passwordError ?? this.passwordError,
-      photoUrl: photoUrl ?? this.photoUrl, // copyWith kullanımı
+      nameError: nameError ?? this.nameError,
+      retryPasswordError: retryPasswordError ?? this.retryPasswordError,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 }

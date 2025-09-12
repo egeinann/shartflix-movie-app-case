@@ -37,6 +37,7 @@ class _RegisterScreenState extends State<RegisterScreen>
   bool passwordError = false;
   bool retryPasswordError = false;
   bool isChecked = false;
+  bool showAgreementError = false;
   double opacity = 0.0;
   @override
   void initState() {
@@ -208,38 +209,56 @@ class _RegisterScreenState extends State<RegisterScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.profile),
               controller: nameController,
-              hasError:
-                  cubit.state.name.isEmpty, // nameError alanını kullanabilirsin
+              hasError: cubit.state.nameError,
               hinttext: "Ad Soyad",
               lenght: 20,
-              onChanged: cubit.nameChanged,
+              onChanged: (val) {
+                cubit.nameChanged(val);
+                cubit.clearErrorIfValid(name: val);
+              },
             ),
 
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.mail),
               controller: emailController,
-
+              hasError: cubit.state.emailError,
               hinttext: "E-Posta",
               lenght: 30,
-              onChanged: cubit.emailChanged,
+              onChanged: (val) {
+                cubit.emailChanged(val);
+                cubit.clearErrorIfValid(email: val);
+              },
             ),
 
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: passwordController,
-
+              hasError: cubit.state.passwordError,
               hinttext: "Şifre",
               lenght: 18,
               showPasswordToggle: true,
-              onChanged: cubit.passwordChanged,
+              onChanged: (val) {
+                cubit.passwordChanged(val);
+                cubit.clearErrorIfValid(
+                  password: val,
+                  retryPassword: retryPasswordController.text,
+                );
+              },
             ),
+
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: retryPasswordController,
-              hasError: false,
+              hasError: cubit.state.retryPasswordError,
               hinttext: "Şifre tekrar",
               lenght: 18,
               showPasswordToggle: true,
+              onChanged: (val) {
+                cubit.clearErrorIfValid(
+                  password: passwordController.text,
+                  retryPassword: val,
+                );
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -250,6 +269,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                   onTap: () {
                     setState(() {
                       isChecked = !isChecked;
+                      showAgreementError = !showAgreementError;
                     });
                   },
                 ),
@@ -257,30 +277,38 @@ class _RegisterScreenState extends State<RegisterScreen>
                 Flexible(
                   child: Text.rich(
                     TextSpan(
-                      text: '',
                       children: [
                         TextSpan(
                           text: "Kullanıcı sözleşmesini",
                           style: context.textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).shadowColor.withAlpha(120),
+                            color: showAgreementError
+                                ? Colors.red
+                                : Theme.of(context).shadowColor.withAlpha(120),
                           ),
                         ),
                         TextSpan(
                           text: " okudum ve kabul ediyorum.",
                           style: context.textTheme.bodySmall?.copyWith(
                             decoration: TextDecoration.underline,
+                            color: showAgreementError
+                                ? Colors.red
+                                : Theme.of(context).shadowColor.withAlpha(120),
                           ),
                         ),
                         TextSpan(
                           text: " Bu\n",
                           style: context.textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).shadowColor.withAlpha(120),
+                            color: showAgreementError
+                                ? Colors.red
+                                : Theme.of(context).shadowColor.withAlpha(120),
                           ),
                         ),
                         TextSpan(
                           text: "sözleşmeyi okuyarak devam ediniz lütfen.",
                           style: context.textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).shadowColor.withAlpha(120),
+                            color: showAgreementError
+                                ? Colors.red
+                                : Theme.of(context).shadowColor.withAlpha(120),
                           ),
                         ),
                       ],
@@ -295,9 +323,24 @@ class _RegisterScreenState extends State<RegisterScreen>
               child: CustomFilledButton(
                 text: "Kaydol",
                 onPressed: () {
-                  isChecked
-                      ? cubit.register()
-                      : debugPrint("sözleşmeyi kabul et");
+                  if (!isChecked) {
+                    setState(() {
+                      showAgreementError = true;
+                    });
+                    return; // kayıt işlemini durdur
+                  }
+
+                  // Checkbox işaretliyse validate ve register işlemi
+                  cubit.validateFields(
+                    retryPassword: retryPasswordController.text,
+                  );
+
+                  if (!cubit.state.nameError &&
+                      !cubit.state.emailError &&
+                      !cubit.state.passwordError &&
+                      !cubit.state.retryPasswordError) {
+                    cubit.register();
+                  }
                 },
               ),
             ),

@@ -41,7 +41,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           controller: widget.controller,
           style: context.textTheme.bodyMedium?.copyWith(
             color: widget.hasError
-                ? const Color(0xFFE50914)
+                ? const Color(0xFFF47171)
                 : context.textTheme.bodyMedium?.color,
           ),
           cursorColor: context.theme.shadowColor,
@@ -88,14 +88,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: const BorderSide(
-                color: Color(0xFFE50914),
+                color: Color(0xFFF47171),
                 width: 1.5,
               ),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(18),
               borderSide: const BorderSide(
-                color: Color(0xFFE50914),
+                color: Color(0xFFF47171),
                 width: 1.5,
               ),
             ),

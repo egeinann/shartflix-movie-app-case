@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -414,7 +412,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 // Upload tamamlandıktan sonra AuthCubit user state'ini güncelle
                 if (photoCubit.state is PhotoSuccess) {
                   final updatedUser = (photoCubit.state as PhotoSuccess).user;
-                  authCubit.emit(authCubit.state.copyWith(user: updatedUser));
+                  authCubit.updateUser(updatedUser); // <- burası düzeltildi
                 }
               }
             }

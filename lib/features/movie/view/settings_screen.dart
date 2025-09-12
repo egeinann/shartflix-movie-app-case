@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
             trailing: BlocBuilder<ThemeCubit, ThemeMode>(
               builder: (context, themeMode) {
                 return CupertinoSwitch(
-                  value: themeMode == ThemeMode.dark,
+                  value: context.watch<ThemeCubit>().state == ThemeMode.dark,
                   onChanged: (_) {
                     context.read<ThemeCubit>().toggleTheme();
                   },
