@@ -5,22 +5,31 @@ import 'package:shartflix_movie_app_case/bloc/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/movie_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/services/photo_service.dart';
 import 'package:shartflix_movie_app_case/core/themes/themes.dart';
+import 'package:shartflix_movie_app_case/features/auth/model/user_model.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/favoriteMovie/favorite_movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_cubit.dart';
 import 'package:shartflix_movie_app_case/features/splash/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  // Servisleri başlat
   final movieServices = MovieServices();
   final authServices = AuthServices();
+  final photoServices = PhotoServices();
+
+  // Başlangıçta boş bir user oluşturuyoruz
+  final user = UserModel(id: '', name: '', email: '', password: '');
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => AuthCubit(authServices)),
-        BlocProvider(create: (_) => PhotoCubit()),
+        BlocProvider(create: (_) => PhotoCubit(photoServices, user)),
         BlocProvider(create: (_) => ThemeCubit()),
         BlocProvider(create: (_) => MovieCubit(movieServices: movieServices)),
         BlocProvider(

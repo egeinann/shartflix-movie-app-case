@@ -44,7 +44,7 @@ class AuthServices {
     try {
       final body = {'name': name, 'email': email, 'password': password};
       if (photoUrl != null && photoUrl.isNotEmpty) {
-        body['photoUrl'] = photoUrl; // foto ekleniyor
+        body['photoUrl'] = photoUrl;
       }
 
       final response = await http

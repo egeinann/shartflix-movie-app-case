@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -14,7 +13,6 @@ import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart';
-import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -103,25 +101,17 @@ class _RegisterScreenState extends State<RegisterScreen>
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AuthCubit>();
     return BlocProvider(
       create: (_) => AuthCubit(AuthServices()),
       child: Scaffold(
         body: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.isSuccess && state.user != null) {
-              final authCubit = context.read<AuthCubit>();
-
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddPhotoScreen(cubit: authCubit),
-                ),
-              );
+              NavigationService().clearStackAndGo('/addphoto');
             }
           },
           builder: (context, state) {
-            // final cubit = context.read<AuthCubit>();
+            final cubit = context.read<AuthCubit>();
             return GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () {
@@ -228,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.mail),
               controller: emailController,
-              hasError: cubit.state.emailError, // emailError
+
               hinttext: "E-Posta",
               lenght: 30,
               onChanged: cubit.emailChanged,
@@ -237,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen>
             CustomTextField(
               prefixIcon: AppIcons.icon(AppIcons.lock),
               controller: passwordController,
-              hasError: cubit.state.passwordError, // passwordError
+
               hinttext: "Şifre",
               lenght: 18,
               showPasswordToggle: true,
@@ -305,31 +295,9 @@ class _RegisterScreenState extends State<RegisterScreen>
               child: CustomFilledButton(
                 text: "Kaydol",
                 onPressed: () {
-                  debugPrint("Cubit state name: ${cubit.state.name}");
-                  debugPrint("Cubit state email: ${cubit.state.email}");
-                  debugPrint("Cubit state password: ${cubit.state.password}");
-                  if (!isChecked) {
-                    debugPrint("Sözleşmeyi kabul et");
-                    return;
-                  }
-
-                  if (cubit.validateInputs(
-                    name: nameController.text,
-                    email: emailController.text,
-                    password: passwordController.text,
-                    retryPassword: retryPasswordController.text,
-                  )) {
-                    final authCubit = context.read<AuthCubit>();
-
-                    Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                        builder: (context) => AddPhotoScreen(cubit: authCubit),
-                      ),
-                    );
-                  } else {
-                    debugPrint("Inputlar hatalı");
-                  }
+                  isChecked
+                      ? cubit.register()
+                      : debugPrint("sözleşmeyi kabul et");
                 },
               ),
             ),

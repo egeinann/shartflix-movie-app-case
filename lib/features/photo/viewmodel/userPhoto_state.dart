@@ -1,18 +1,29 @@
-import 'dart:io';
+import 'package:equatable/equatable.dart';
+import 'package:shartflix_movie_app_case/features/auth/model/user_model.dart';
 
-abstract class PhotoState {}
+abstract class PhotoState extends Equatable {
+  const PhotoState();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class PhotoInitial extends PhotoState {}
 
 class PhotoLoading extends PhotoState {}
 
 class PhotoSuccess extends PhotoState {
-  final Map<String, dynamic> user; // servisten gelen kullanıcı verisi
-  final File? localFile;            // local olarak seçilen fotoğraf
-  PhotoSuccess(this.user, {this.localFile});
+  final UserModel user;
+  const PhotoSuccess({required this.user});
+
+  @override
+  List<Object?> get props => [user];
 }
 
 class PhotoError extends PhotoState {
-  final String message;
-  PhotoError(this.message);
+  final String error;
+  const PhotoError({required this.error});
+
+  @override
+  List<Object?> get props => [error];
 }

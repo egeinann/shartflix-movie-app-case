@@ -39,7 +39,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         TextField(
           maxLength: widget.lenght,
           controller: widget.controller,
-          style: context.textTheme.bodyMedium,
+          style: context.textTheme.bodyMedium?.copyWith(
+            color: widget.hasError
+                ? const Color(0xFFE50914)
+                : context.textTheme.bodyMedium?.color,
+          ),
           cursorColor: context.theme.shadowColor,
           cursorHeight: 20,
           onChanged: widget.onChanged,

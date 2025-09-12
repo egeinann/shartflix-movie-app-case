@@ -13,12 +13,8 @@ class AuthCubit extends Cubit<AuthState> {
   void passwordChanged(String password) =>
       emit(state.copyWith(password: password));
   void nameChanged(String name) => emit(state.copyWith(name: name));
-  
-  void updatePhotoUrl(String? photoUrl) {
-    if (state.user != null) {
-      emit(state.copyWith(user: state.user!.copyWith(photoUrl: photoUrl)));
-    }
-  }
+
+  String? tempPhotoUrl;
 
   Future<void> login() async {
     validateFields();
@@ -39,6 +35,10 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
     }
+  }
+
+  void updateUser(UserModel user) {
+    emit(state.copyWith(user: user));
   }
 
   Future<void> register() async {
@@ -76,6 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
         debugPrint("Kayıt başarılı");
+        debugPrint("fotoUrl çıktı :${state.user?.photoUrl}");
       } else {
         emit(
           state.copyWith(

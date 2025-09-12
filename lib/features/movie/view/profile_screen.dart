@@ -1,19 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/padding_extension.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/widgets/shaderMaskWidget.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shimmer_loading.dart';
-import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
 import 'package:shartflix_movie_app_case/core/widgets/bottomsheet.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/favoriteMovie/favorite_movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_state.dart';
+import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_cubit.dart';
+import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     context.read<AuthCubit>().fetchProfile();
     context.read<FavoriteMovieCubit>().fetchFavorites();
   }
@@ -119,10 +124,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }).toList();
 
         if (updatedFavorites.isEmpty) {
-          return const Center(
-            child: Text(
-              'Favori film bulunamadı.',
-              style: TextStyle(color: Colors.grey),
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+              child: shaderMaskWidget(
+                context,
+                Text(
+                  'Favori film bulunamadı.',
+                  style: context.textTheme.bodyLarge,
+                ),
+              ),
             ),
           );
         }
@@ -290,8 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Row profileInformation(BuildContext context) {
     final authState = context.watch<AuthCubit>().state;
     debugPrint(authState.user?.id);
-    debugPrint("foto ${authState.user?.photoUrl}");
-    // Burada kullanıcı adını print ediyoruz
+    debugPrint("foto: ${authState.user?.photoUrl}");
     print("Kullanıcı Adı: ${authState.user?.name ?? 'Kullanıcı yok'}");
 
     return Row(
@@ -363,7 +373,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
         GestureDetector(
-          onTap: () {},
+          onTap: () async {
+            final photoCubit = context.read<PhotoCubit>();
+            final authCubit = context.read<AuthCubit>();
+            final source = await showModalBottomSheet<ImageSource>(
+              context: context,
+              builder: (_) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.camera_alt),
+                    title: Text('Kamera', style: context.textTheme.bodyLarge),
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.photo),
+                    title: Text(
+                      'Galeriden Seç',
+                      style: context.textTheme.bodyLarge,
+                    ),
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                  SizedBox(height: 5.h),
+                ],
+              ),
+            );
+
+            if (source != null) {
+              final pickedFile = await ImagePicker().pickImage(
+                source: source,
+                imageQuality: 70,
+              );
+
+              if (pickedFile != null) {
+                final file = File(pickedFile.path);
+
+                // Fotoğrafı backend'e yükle
+                await photoCubit.uploadPhoto(file);
+
+                // Upload tamamlandıktan sonra AuthCubit user state'ini güncelle
+                if (photoCubit.state is PhotoSuccess) {
+                  final updatedUser = (photoCubit.state as PhotoSuccess).user;
+                  authCubit.emit(authCubit.state.copyWith(user: updatedUser));
+                }
+              }
+            }
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 10),
             decoration: BoxDecoration(

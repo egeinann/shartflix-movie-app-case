@@ -56,6 +56,7 @@ class NavigationService {
       '/splash': (context) => const SplashScreen(),
       '/login': (context) => const LoginScreen(),
       '/register': (context) => const RegisterScreen(),
+      '/addphoto': (context) => const AddPhotoScreen(),
       '/controller': (context) => const ControllerScreen(),
       '/settings': (context) => const SettingsScreen(),
     };

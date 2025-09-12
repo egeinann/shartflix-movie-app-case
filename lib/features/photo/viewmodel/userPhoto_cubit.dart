@@ -1,55 +1,36 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
+
 import 'package:shartflix_movie_app_case/core/services/photo_service.dart';
 import 'package:shartflix_movie_app_case/features/auth/model/user_model.dart';
-import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_state.dart';
 
 class PhotoCubit extends Cubit<PhotoState> {
-  PhotoCubit() : super(PhotoInitial());
+  final PhotoServices _photoServices;
+  UserModel user;
 
-  File? _localFile;
+  PhotoCubit(this._photoServices, this.user) : super(PhotoInitial());
 
-  Future<void> uploadPhoto(
-    File file,
-    String password, {
-    AuthCubit? authCubit,
-  }) async {
-    _localFile = file;
+  // *** FOTOĞRAF YÜKLE ***
+  Future<void> uploadPhoto(File file) async {
     emit(PhotoLoading());
+    final result = await _photoServices.uploadPhoto(file);
 
-    final result = await PhotoServices().uploadPhoto(file);
-    if (result['success']) {
-      final userMap = result['user'] as Map<String, dynamic>;
-      emit(PhotoSuccess(userMap, localFile: _localFile));
+    if (result['success'] == true) {
+      final updatedUserJson = result['user'];
 
-      // AuthCubit var ise foto URL'sini oraya da yolla
-      if (authCubit != null) {
-        final photoUrl = userMap['photoUrl'] as String?;
-        authCubit.updatePhotoUrl(photoUrl);
-      }
+      final updatedUser = user.copyWith(
+        photoUrl: updatedUserJson['photoUrl'] ?? user.photoUrl,
+      );
+
+      user = updatedUser;
+      emit(PhotoSuccess(user: updatedUser));
     } else {
-      emit(PhotoError(result['error'] ?? 'Bilinmeyen hata'));
+      emit(PhotoError(error: result['error']));
     }
   }
 
-  void skip(String password) {
-    _localFile = null;
-    final userMap = {
-      'id': '',
-      'name': '',
-      'email': '',
-      'password': password,
-      'photoUrl': null,
-    };
-    emit(PhotoSuccess(userMap, localFile: null));
-  }
-
-  void removeLocalPhoto() {
-    _localFile = null;
-    if (state is PhotoSuccess) {
-      final user = (state as PhotoSuccess).user;
-      emit(PhotoSuccess(user, localFile: null));
-    }
+  void removePhoto() {
+    emit(PhotoSuccess(user: user.copyWith(photoUrl: "")));
   }
 }

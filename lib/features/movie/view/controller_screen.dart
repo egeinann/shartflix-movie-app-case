@@ -80,7 +80,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
               ),
               SizedBox(width: 5),
               Text(
-                "Profile",
+                "Profil",
                 style: context.textTheme.bodyLarge?.copyWith(
              
                   fontWeight: FontWeight.w500,
