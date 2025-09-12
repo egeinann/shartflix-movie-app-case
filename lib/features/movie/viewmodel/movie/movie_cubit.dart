@@ -8,48 +8,58 @@ class MovieCubit extends Cubit<MovieState> {
 
   MovieCubit({required this.movieServices}) : super(MovieState.initial());
 
-Future<void> fetchMoviesByPage({bool reset = false}) async {
-  if (state.isPageLoading || state.isLoading || state.hasReachedMax) return;
+  // filmleri getir
+  Future<void> fetchMoviesByPage({bool reset = false}) async {
+    if (state.isPageLoading || state.isLoading || state.hasReachedMax) return;
 
-  if (reset) {
-    emit(state.copyWith(
-      movies: [],
-      error: null,
-      hasReachedMax: false,
-      isLoading: true,
-      isPageLoading: true,
-      nextPage: 1,
-    ));
-  } else {
-    emit(state.copyWith(isPageLoading: true, error: null));
-  }
+    if (reset) {
+      emit(
+        state.copyWith(
+          movies: [],
+          error: null,
+          hasReachedMax: false,
+          isLoading: true,
+          isPageLoading: true,
+          nextPage: 1,
+        ),
+      );
+    } else {
+      emit(state.copyWith(isPageLoading: true, error: null));
+    }
 
-  try {
-    final data = await movieServices.getMovies(reset: reset);
-final cleanedMovies = data.movies.map((movie) {
+    try {
+      final data = await movieServices.getMovies(reset: reset);
+      final cleanedMovies = data.movies.map((movie) {
         return movie.copyWith(
           poster: movie.poster.isNotEmpty ? movie.poster : '',
         );
       }).toList();
 
-    final movies = reset ? cleanedMovies : [...state.movies, ...cleanedMovies];
+      final movies = reset
+          ? cleanedMovies
+          : [...state.movies, ...cleanedMovies];
 
-    emit(state.copyWith(
-      movies: movies,
-      hasReachedMax: data.pagination.currentPage >= data.pagination.maxPage,
-      isLoading: false,
-      isPageLoading: false,
-      nextPage: data.pagination.currentPage + 1,
-    ));
-  } catch (e) {
-    emit(state.copyWith(
-      error: e.toString(),
-      isLoading: false,
-      isPageLoading: false,
-    ));
+      emit(
+        state.copyWith(
+          movies: movies,
+          hasReachedMax: data.pagination.currentPage >= data.pagination.maxPage,
+          isLoading: false,
+          isPageLoading: false,
+          nextPage: data.pagination.currentPage + 1,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          error: e.toString(),
+          isLoading: false,
+          isPageLoading: false,
+        ),
+      );
+    }
   }
-}
 
+  // like butonu işlevi
   Future<void> toggleFavorite(String movieId) async {
     try {
       await movieServices.toggleFavorite(movieId);
@@ -67,6 +77,7 @@ final cleanedMovies = data.movies.map((movie) {
     }
   }
 
+  // filmleri yenile
   void reset() {
     emit(MovieState.initial());
   }

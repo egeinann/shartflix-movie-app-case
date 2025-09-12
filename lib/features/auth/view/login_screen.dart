@@ -9,7 +9,6 @@ import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
-import 'package:shartflix_movie_app_case/core/widgets/loading_lottie.dart';
 import 'package:shartflix_movie_app_case/core/widgets/social_container.dart';
 import 'package:shartflix_movie_app_case/core/widgets/customTextField.dart';
 import 'package:shartflix_movie_app_case/core/widgets/filled_button.dart';
@@ -151,6 +150,25 @@ class _LoginScreenState extends State<LoginScreen>
                         ),
                       ),
                     ),
+                    AnimatedOpacity(
+                      opacity: state.isLoading ? 1.0 : 0.0,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeInOut,
+                      child: IgnorePointer(
+                        // overlay aktifken UI etkileşimini engeller
+                        ignoring: !state.isLoading,
+                        child: Container(
+                          color: Colors.black.withAlpha(150),
+                          child: Center(
+                            child: Lottie.asset(
+                              AppLotties.loading,
+
+                              repeat: true,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -247,30 +265,28 @@ class _LoginScreenState extends State<LoginScreen>
 
             SizedBox(
               width: 100.w,
-              child: state.isLoading
-                  ? loadingLottie()
-                  : CustomFilledButton(
-                      text: "Giriş Yap",
-                      onPressed: () async {
-                        setState(() {
-                          emailError = !emailController.text.contains('@');
-                          passwordError = passwordController.text.isEmpty;
-                        });
+              child: CustomFilledButton(
+                text: "Giriş Yap",
+                onPressed: () async {
+                  setState(() {
+                    emailError = !emailController.text.contains('@');
+                    passwordError = passwordController.text.isEmpty;
+                  });
 
-                        if (emailError || passwordError) return;
+                  if (emailError || passwordError) return;
 
-                        // Backend login
-                        await cubit.login();
+                  // Backend login
+                  await cubit.login();
 
-                        // Eğer backend hata dönerse TextField hatalarını göster
-                        if (cubit.state.error != null) {
-                          setState(() {
-                            emailError = true;
-                            passwordError = true;
-                          });
-                        }
-                      },
-                    ),
+                  // Eğer backend hata dönerse TextField hatalarını göster
+                  if (cubit.state.error != null) {
+                    setState(() {
+                      emailError = true;
+                      passwordError = true;
+                    });
+                  }
+                },
+              ),
             ),
           ],
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:shartflix_movie_app_case/bloc/theme_cubit.dart';
+import 'package:shartflix_movie_app_case/features/settings/viewmodel/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/movie_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
@@ -14,29 +14,37 @@ import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cu
 import 'package:shartflix_movie_app_case/features/photo/viewmodel/userPhoto_cubit.dart';
 import 'package:shartflix_movie_app_case/features/splash/splash_screen.dart';
 
+import 'package:easy_localization/easy_localization.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   // Servisleri başlat
   final movieServices = MovieServices();
   final authServices = AuthServices();
   final photoServices = PhotoServices();
 
-  // Başlangıçta boş bir user oluşturuyoruz
+  // Başlangıçta boş bir user
   final user = UserModel(id: '', name: '', email: '', password: '');
 
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (_) => AuthCubit(authServices)),
-        BlocProvider(create: (_) => PhotoCubit(photoServices, user)),
-        BlocProvider(create: (_) => ThemeCubit()),
-        BlocProvider(create: (_) => MovieCubit(movieServices: movieServices)),
-        BlocProvider(
-          create: (_) => FavoriteMovieCubit(movieServices: movieServices),
-        ),
-      ],
-      child: const ShartflixApp(),
+    EasyLocalization(
+      supportedLocales: [Locale('tr'), Locale('en')],
+      path: 'assets/translations', // JSON dosyalarının yolu
+      fallbackLocale: Locale('tr'),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => AuthCubit(authServices)),
+          BlocProvider(create: (_) => PhotoCubit(photoServices, user)),
+          BlocProvider(create: (_) => ThemeCubit()),
+          BlocProvider(create: (_) => MovieCubit(movieServices: movieServices)),
+          BlocProvider(
+            create: (_) => FavoriteMovieCubit(movieServices: movieServices),
+          ),
+        ],
+        child: const ShartflixApp(),
+      ),
     ),
   );
 }
@@ -50,6 +58,9 @@ class ShartflixApp extends StatelessWidget {
       builder: (context, themeMode) {
         return ResponsiveSizer(
           builder: (p0, p1, p2) => MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
             navigatorKey: NavigationService().navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: AppTheme.lightTheme,

@@ -12,6 +12,7 @@ import 'package:shartflix_movie_app_case/core/widgets/shaderMaskWidget.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shimmer_loading.dart';
 import 'package:shartflix_movie_app_case/core/widgets/bottomsheet.dart';
 import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
+import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/favoriteMovie/favorite_movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_cubit.dart';
 import 'package:shartflix_movie_app_case/features/movie/viewmodel/movie/movie_state.dart';
@@ -295,144 +296,192 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // *** PROFILE INFORMATION ***
-  Row profileInformation(BuildContext context) {
-    final authState = context.watch<AuthCubit>().state;
-    debugPrint(authState.user?.id);
-    debugPrint("foto: ${authState.user?.photoUrl}");
-    print("Kullanıcı Adı: ${authState.user?.name ?? 'Kullanıcı yok'}");
+  // *** PROFILE BİLGİLERİ ***
+  Widget profileInformation(BuildContext context) {
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, authState) {
+        return BlocBuilder<PhotoCubit, PhotoState>(
+          builder: (context, photoState) {
+            final isUploading = photoState is PhotoUploading;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Row(
-          spacing: 10,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            authState.user?.photoUrl == null
-                ? const ShimmerLoading(
-                    width: 50,
-                    height: 50,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  )
-                : CircleAvatar(
-                    radius: 25,
-                    backgroundImage:
-                        (authState.user?.photoUrl?.isNotEmpty ?? false)
-                        ? NetworkImage(authState.user!.photoUrl!)
-                        : null,
-                    backgroundColor: context.theme.primaryColor,
-                    child: (authState.user?.photoUrl?.isEmpty ?? true)
-                        ? AppIcons.icon(
-                            AppIcons.profileFill,
-                            color: Colors.white,
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Kullanıcı bilgisi ve fotoğraf
+                Row(
+                  spacing: 10,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // FOTOĞRAF
+                    (authState.user?.photoUrl == null || isUploading)
+                        ? const ShimmerLoading(
+                            width: 50,
+                            height: 50,
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
                           )
-                        : null,
-                  ),
-            authState.user == null
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 5,
-                    children: const [
-                      ShimmerLoading(width: 100, height: 16),
-                      ShimmerLoading(width: 80, height: 14),
-                    ],
-                  )
-                : SizedBox(
-                    width: 30.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      spacing: 5,
-                      children: [
-                        Text(
-                          authState.user?.name ?? "Kullanıcı",
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            fontFamily: AppFontFamilies.instrumentSansMedium,
+                        : CircleAvatar(
+                            radius: 25,
+                            backgroundColor: context.theme.primaryColor,
+                            backgroundImage:
+                                authState.user!.photoUrl!.isNotEmpty
+                                ? NetworkImage(
+                                    "${authState.user!.photoUrl}?v=${DateTime.now().millisecondsSinceEpoch}",
+                                  )
+                                : null,
+                            child: authState.user!.photoUrl!.isEmpty
+                                ? AppIcons.icon(
+                                    AppIcons.profileFill,
+                                    color: Colors.white,
+                                  )
+                                : null,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
 
-                        Text(
-                          "ID: ${authState.user?.id ?? 'null'}",
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontFamily: AppFontFamilies.instrumentSansMedium,
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).shadowColor.withAlpha(150),
+                    // KULLANICI BİLGİSİ
+                    (authState.user == null || isUploading)
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            spacing: 5,
+                            children: const [
+                              ShimmerLoading(
+                                width: 100,
+                                height: 16,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                              ),
+                              ShimmerLoading(
+                                width: 80,
+                                height: 14,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(4),
+                                ),
+                              ),
+                            ],
+                          )
+                        : SizedBox(
+                            width: 30.w,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 5,
+                              children: [
+                                Text(
+                                  authState.user?.name ?? "Kullanıcı",
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily:
+                                        AppFontFamilies.instrumentSansMedium,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                                Text(
+                                  "ID: ${authState.user?.id ?? 'null'}",
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    fontFamily:
+                                        AppFontFamilies.instrumentSansMedium,
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(
+                                      context,
+                                    ).shadowColor.withAlpha(150),
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ],
+                            ),
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                        ),
-                      ],
+                  ],
+                ),
+
+                // FOTOĞRAF EKLE BUTONU
+                GestureDetector(
+                  onTap: () async {
+                    final photoCubit = context.read<PhotoCubit>();
+                    final authCubit = context.read<AuthCubit>();
+                    final source = await showModalBottomSheet<ImageSource>(
+                      context: context,
+                      builder: (_) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.camera_alt),
+                            title: Text(
+                              'Kamera',
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            onTap: () =>
+                                Navigator.pop(context, ImageSource.camera),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.photo),
+                            title: Text(
+                              'Galeriden Seç',
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            onTap: () =>
+                                Navigator.pop(context, ImageSource.gallery),
+                          ),
+                          SizedBox(height: 5.h),
+                        ],
+                      ),
+                    );
+
+                    if (source != null) {
+                      final pickedFile = await ImagePicker().pickImage(
+                        source: source,
+                        imageQuality: 70,
+                      );
+
+                      if (pickedFile != null) {
+                        final file = File(pickedFile.path);
+
+                        // Fotoğrafı backend'e yükle
+                        await photoCubit.uploadPhoto(file);
+
+                        // Upload tamamlandıktan sonra AuthCubit user state'ini güncelle
+                        if (photoCubit.state is PhotoSuccess) {
+                          final uploadedUser =
+                              (photoCubit.state as PhotoSuccess).user;
+                          final currentUser = authCubit.state.user;
+
+                          if (currentUser != null) {
+                            final updatedUser = currentUser.copyWith(
+                              photoUrl: uploadedUser
+                                  .photoUrl, // sadece fotoğrafı değiştir
+                            );
+
+                            authCubit.emit(
+                              authCubit.state.copyWith(user: updatedUser),
+                            );
+                          }
+                        }
+                      }
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 19,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withAlpha(40),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      "Fotoğraf Ekle",
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontFamily: AppFontFamilies.instrumentSansSemiBold,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-          ],
-        ),
-        GestureDetector(
-          onTap: () async {
-            final photoCubit = context.read<PhotoCubit>();
-            final authCubit = context.read<AuthCubit>();
-            final source = await showModalBottomSheet<ImageSource>(
-              context: context,
-              builder: (_) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.camera_alt),
-                    title: Text('Kamera', style: context.textTheme.bodyLarge),
-                    onTap: () => Navigator.pop(context, ImageSource.camera),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.photo),
-                    title: Text(
-                      'Galeriden Seç',
-                      style: context.textTheme.bodyLarge,
-                    ),
-                    onTap: () => Navigator.pop(context, ImageSource.gallery),
-                  ),
-                  SizedBox(height: 5.h),
-                ],
-              ),
+                ),
+              ],
             );
-
-            if (source != null) {
-              final pickedFile = await ImagePicker().pickImage(
-                source: source,
-                imageQuality: 70,
-              );
-
-              if (pickedFile != null) {
-                final file = File(pickedFile.path);
-
-                // Fotoğrafı backend'e yükle
-                await photoCubit.uploadPhoto(file);
-
-                // Upload tamamlandıktan sonra AuthCubit user state'ini güncelle
-                if (photoCubit.state is PhotoSuccess) {
-                  final updatedUser = (photoCubit.state as PhotoSuccess).user;
-                  authCubit.updateUser(updatedUser); // <- burası düzeltildi
-                }
-              }
-            }
           },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 19, vertical: 10),
-            decoration: BoxDecoration(
-              color: Colors.grey.withAlpha(40),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Text(
-              "Fotoğraf Ekle",
-              style: context.textTheme.bodySmall?.copyWith(
-                fontFamily: AppFontFamilies.instrumentSansSemiBold,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

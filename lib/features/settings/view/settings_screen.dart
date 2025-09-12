@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shartflix_movie_app_case/bloc/theme_cubit.dart';
+import 'package:shartflix_movie_app_case/features/settings/viewmodel/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/padding_extension.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';

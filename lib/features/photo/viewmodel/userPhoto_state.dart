@@ -8,6 +8,8 @@ abstract class PhotoState extends Equatable {
   List<Object?> get props => [];
 }
 
+class PhotoUploading extends PhotoState {}
+
 class PhotoInitial extends PhotoState {}
 
 class PhotoLoading extends PhotoState {}

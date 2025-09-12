@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shartflix_movie_app_case/core/constants/app_icons.dart';
 import 'package:shartflix_movie_app_case/core/constants/images.dart';
+import 'package:shartflix_movie_app_case/core/constants/lotties.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
@@ -141,6 +143,31 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                       ),
+                    ),
+                    // Animasyonlu Loading Overlay
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                        return AnimatedOpacity(
+                          opacity: state.isLoading ? 1.0 : 0.0,
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                          child: IgnorePointer(
+                            ignoring: !state
+                                .isLoading, // Loading değilken UI interaktif
+                            child: Container(
+                              color: Colors.black.withAlpha(150),
+                              child: Center(
+                                child: Lottie.asset(
+                                  AppLotties.loading,
+                                  width: 150,
+                                  height: 150,
+                                  repeat: true,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

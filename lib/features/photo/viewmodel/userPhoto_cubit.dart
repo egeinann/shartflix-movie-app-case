@@ -30,7 +30,18 @@ class PhotoCubit extends Cubit<PhotoState> {
     }
   }
 
+  // fotoğrafı sil
   void removePhoto() {
     emit(PhotoSuccess(user: user.copyWith(photoUrl: "")));
+  }
+
+  // *** animasyon ***
+  void startUploading() {
+    emit(PhotoUploading());
+  }
+
+  // *** animasyon ***
+  void stopUploading() {
+    emit(PhotoInitial());
   }
 }

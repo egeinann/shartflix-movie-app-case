@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:shartflix_movie_app_case/features/movie/view/controller_screen.dart';
 import 'package:shartflix_movie_app_case/features/photo/view/add_photo_screen.dart';
-import 'package:shartflix_movie_app_case/features/movie/view/settings_screen.dart';
+import 'package:shartflix_movie_app_case/features/settings/view/settings_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/view/login_screen.dart';
 import 'package:shartflix_movie_app_case/features/auth/view/register_screen.dart';
 import 'package:shartflix_movie_app_case/features/splash/splash_screen.dart';

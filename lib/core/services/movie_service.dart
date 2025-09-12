@@ -8,16 +8,16 @@ import '../utils/token.dart';
 class MovieServices {
   final String baseUrl = AppStrings.baseurl;
   int _currentPage = 1;
+
+  // *** FİLMLERİ ÇEK ***
   Future<Data> getMovies({bool reset = false}) async {
     if (reset) _currentPage = 1;
 
     final token = await Token.getIdToken();
-
+    print("Fetching movies from page $_currentPage"); // 5'erli film çekme print
     final response = await http.get(
       Uri.parse("$baseUrl/movie/list?page=$_currentPage"),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
+      headers: {"Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
@@ -29,15 +29,13 @@ class MovieServices {
     }
   }
 
-
+  // *** BEĞENİLEN FİLMLER ***
   Future<void> toggleFavorite(String movieId) async {
     final token = await Token.getIdToken();
 
     final response = await http.post(
       Uri.parse("$baseUrl/movie/favorite/$movieId"),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
+      headers: {"Authorization": "Bearer $token"},
     );
 
     if (response.statusCode != 200) {
@@ -45,15 +43,13 @@ class MovieServices {
     }
   }
 
-
+  // *** FAVORİ FİLMLER ***
   Future<List<Movie>> getFavoriteMovies() async {
     final token = await Token.getIdToken();
 
     final response = await http.get(
       Uri.parse("$baseUrl/movie/favorites"),
-      headers: {
-        "Authorization": "Bearer $token",
-      },
+      headers: {"Authorization": "Bearer $token"},
     );
 
     if (response.statusCode == 200) {
