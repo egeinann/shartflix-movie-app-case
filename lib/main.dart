@@ -1,6 +1,10 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:shartflix_movie_app_case/connectivity/connectivitiy_state.dart';
+import 'package:shartflix_movie_app_case/connectivity/connectivity_cubit.dart';
+import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/features/settings/viewmodel/language_cubit.dart';
 import 'package:shartflix_movie_app_case/features/settings/viewmodel/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/services/auth_service.dart';
@@ -36,6 +40,7 @@ void main() async {
       fallbackLocale: Locale('en'), // fallback English
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (_) => ConnectivityCubit(Connectivity())),
           BlocProvider(create: (_) => AuthCubit(authServices)),
           BlocProvider(create: (_) => PhotoCubit(photoServices, user)),
           BlocProvider(create: (_) => ThemeCubit()),
@@ -57,10 +62,9 @@ class ShartflixApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, ThemeMode>(
-      builder: (context, themeMode) {
+      builder: (context, currentThemeMode) {
         return BlocBuilder<LanguageCubit, Locale>(
           builder: (context, locale) {
-            // Cubit ile EasyLocalization senkronizasyonu
             if (context.locale != locale) {
               context.setLocale(locale);
             }
@@ -71,10 +75,38 @@ class ShartflixApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
-                themeMode: themeMode,
+                themeMode: currentThemeMode,
                 localizationsDelegates: context.localizationDelegates,
                 supportedLocales: context.supportedLocales,
                 locale: context.locale,
+                builder: (context, child) {
+                  // ScaffoldMessenger buraya ekleniyor
+                  return BlocListener<ConnectivityCubit, ConnectivityState>(
+                    listener: (context, state) {
+                      if (state is ConnectivityDisconnected) {
+                        debugPrint("ağ hatası");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Connection Error'.tr(),
+                              style: context.textTheme.bodyLarge,
+                            ),
+                            backgroundColor: Colors.redAccent,
+                            behavior: SnackBarBehavior.floating,
+                            margin: EdgeInsets.only(
+                              top: 30,
+                              left: 10,
+                              right: 10,
+                            ),
+                            duration: Duration(seconds: 10),
+                          ),
+                        );
+                      }
+                      // İnternet geri geldiğinde snackbar gösterme
+                    },
+                    child: child,
+                  );
+                },
                 home: const SplashScreen(),
               ),
             );

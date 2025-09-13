@@ -315,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         TextSpan(
-                          text: " I have read and agree to it.".tr(),
+                          text: "I have read and agree to it.".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             decoration: TextDecoration.underline,
                             color: showAgreementError
@@ -324,7 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                           ),
                         ),
                         TextSpan(
-                          text: " Please\n".tr(),
+                          text: "Please\n".tr(),
                           style: context.textTheme.bodySmall?.copyWith(
                             color: showAgreementError
                                 ? Colors.red

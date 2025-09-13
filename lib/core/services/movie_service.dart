@@ -14,7 +14,8 @@ class MovieServices {
     if (reset) _currentPage = 1;
 
     final token = await Token.getIdToken();
-    print("Fetching movies from page $_currentPage"); // 5'erli film çekme print
+    print("Fetching movies from page $_currentPage");
+
     final response = await http.get(
       Uri.parse("$baseUrl/movie/list?page=$_currentPage"),
       headers: {"Authorization": "Bearer $token"},
@@ -22,7 +23,19 @@ class MovieServices {
 
     if (response.statusCode == 200) {
       final decoded = json.decode(response.body);
+
+      // pagination verisini al
+      final pagination = decoded['data']['pagination'];
+      final currentPage = pagination['currentPage'];
+      final maxPage = pagination['maxPage'];
+
+      // son sayfaya gelindiyse tekrar 1. sayfadan başla
+      if (currentPage >= maxPage) {
+        _currentPage = 1;
+      } else {
       _currentPage++;
+      }
+
       return Data.fromJson(decoded['data']);
     } else {
       throw Exception("Filmler alınamadı");

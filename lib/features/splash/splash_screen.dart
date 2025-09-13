@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen>
                   children: [
                     Image.asset(AppImages.logo),
                     Text(
-                      "Sharflix",
+                      "Shartflix",
                       style: context.textTheme.labelMedium?.copyWith(
                         color: context.theme.shadowColor,
                         fontFamily: AppFontFamilies.plusJakartaSans,

@@ -79,9 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 PageView.builder(
                   controller: _pageController,
                   scrollDirection: Axis.vertical,
-                  itemCount: state.hasReachedMax
-                      ? movies.length
-                      : movies.length + 1, // son index -> loading göstergesi
+                  itemCount: movies.length,
                   onPageChanged: (index) {
                     if (index >= movies.length - 1 &&
                         !state.hasReachedMax &&

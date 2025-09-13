@@ -10,7 +10,7 @@ class MovieCubit extends Cubit<MovieState> {
 
   // filmleri getir
   Future<void> fetchMoviesByPage({bool reset = false}) async {
-    if (state.isPageLoading || state.isLoading || state.hasReachedMax) return;
+    if (state.isPageLoading || state.isLoading) return;
 
     if (reset) {
       emit(
@@ -29,6 +29,7 @@ class MovieCubit extends Cubit<MovieState> {
 
     try {
       final data = await movieServices.getMovies(reset: reset);
+
       final cleanedMovies = data.movies.map((movie) {
         return movie.copyWith(
           poster: movie.poster.isNotEmpty ? movie.poster : '',
@@ -42,7 +43,8 @@ class MovieCubit extends Cubit<MovieState> {
       emit(
         state.copyWith(
           movies: movies,
-          hasReachedMax: data.pagination.currentPage >= data.pagination.maxPage,
+          // sonsuz kaydırma için artık hiçbir zaman true olmuyor
+          hasReachedMax: false,
           isLoading: false,
           isPageLoading: false,
           nextPage: data.pagination.currentPage + 1,
