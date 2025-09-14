@@ -1,16 +1,60 @@
-# shartflix_movie_app_case
+# Case'in Kısa Tanıtım Videosu
 
-A new Flutter project.
+[Video Demo](https://drive.google.com/file/d/1LRXm6qeIvmBItYt0T9qPVJ_BGZ2Wy_73/view?usp=sharing)
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+# Temel Özellikler
 
-A few resources to get you started if this is your first Flutter project:
+- **Kimlik Doğrulama:** Giriş ve kayıt işlemleri, güvenli oturum token depolama ve başarılı giriş sonrası ana sayfaya otomatik yönlendirme.  
+- **Ana Sayfa:** Sayfa başına 5 film ile sonsuz kaydırma, otomatik yükleme göstergesi, pull-to-refresh ve favori filmler için gerçek zamanlı UI güncellemeleri.  
+- **Kullanıcı Profili:** Kullanıcı bilgilerini görüntüleme, favori filmleri yönetme ve profil fotoğrafı yükleme.  
+- **Navigasyon:** Alt navigasyon çubuğu, akıcı sayfa geçişleri, state management ve sekmeler arası state korunumu.  
+- **Mimari & Kod:** Clean Architecture, MVVM ve Bloc state management ile sürdürülebilir ve ölçeklenebilir kod yapısı.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Ekstra Özellikler
+
+- Özel tema & navigasyon servisi  
+- Çoklu dil desteği (İngilizce & Türkçe)
+- Lottie ile animasyonlar  
+- Splash ekran ve uygulama ikonu
+
+---
+
+# Test-Case & Demo
+
+- Giriş, sonsuz kaydırma, favoriler ve profil güncellemeleri gibi temel akışları gösterir.  
+- Uygulamanın tam test edilebilir UI ve fonksiyonelliği, yukarıdaki video demo ile gösterilmektedir.
+
+---
+
+# Projenin Klasör Yapısı
+shartflix_movie_app_case/
+└── lib/
+├── connectivity/
+├── core/
+│ ├── constants/
+│ ├── extensions/
+│ ├── services/
+│ ├── themes/
+│ ├── utils/
+│ └── widgets/
+├── features/
+│ ├── auth/
+│ │ ├── model/
+│ │ ├── view/
+│ │ └── viewmodel/
+│ ├── movie/
+│ │ ├── model/
+│ │ ├── view/
+│ │ └── viewmodel/
+│ ├── photo/
+│ │ ├── view/
+│ │ └── viewmodel/
+│ ├── settings/
+│ │ ├── view/
+│ │ └── viewmodel/
+│ └── splash/
+└── main.dart
