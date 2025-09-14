@@ -17,9 +17,7 @@
 # Ekstra Özellikler
 
 - Özel tema & navigasyon servisi  
-- Çoklu dil desteği (İngilizce & Türkçe)  
-- Debug için logger servisi  
-- Hafif Firebase Crashlytics & Analytics entegrasyonu  
+- Çoklu dil desteği (İngilizce & Türkçe)
 - Lottie ile animasyonlar  
 - Splash ekran ve uygulama ikonu
 
