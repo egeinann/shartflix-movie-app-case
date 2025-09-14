@@ -15,6 +15,7 @@ class ControllerScreen extends StatefulWidget {
 
 class _ControllerScreenState extends State<ControllerScreen> {
   int selectedIndex = 0;
+  final List<Widget> _screens = const [HomeScreen(), ProfileScreen()];
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
         child: Stack(
           children: [
             AppBackground.lightEffect(highLight: false),
-            selectedIndex == 0 ? HomeScreen() : ProfileScreen(),
+            IndexedStack(index: selectedIndex, children: _screens),
           ],
         ),
       ),
@@ -82,12 +83,11 @@ class _ControllerScreenState extends State<ControllerScreen> {
               Text(
                 "Profil",
                 style: context.textTheme.bodyLarge?.copyWith(
-             
                   fontWeight: FontWeight.w500,
                   fontFamily: AppFontFamilies.instrumentSansMedium,
                   color: Colors.white,
                   fontSize: 14,
-                )
+                ),
               ),
             ],
           ),

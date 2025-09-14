@@ -37,7 +37,7 @@ void main() async {
     EasyLocalization(
       supportedLocales: [Locale('tr'), Locale('en')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en'), // fallback English
+      fallbackLocale: Locale('en'),
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => ConnectivityCubit(Connectivity())),

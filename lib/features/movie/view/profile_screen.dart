@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,53 +70,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (context, movieState) {
         final favoriteState = context.watch<FavoriteMovieCubit>().state;
 
+        // *** LOADING DURUMU ***
         if (movieState.isLoading || favoriteState.isLoading) {
           return Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(
-                top: 60,
-                left: 20,
-                right: 20,
-                bottom: 20,
-              ),
+              padding: context.paddingLarge,
               child: GridView.builder(
-                itemCount: 4, // istersen movie sayısına göre ayarla
+                physics: const BouncingScrollPhysics(),
+                itemCount: 4, // loading için sabit shimmer sayısı
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisExtent: 270,
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 20,
                 ),
-                itemBuilder: (context, index) => Column(
-                  spacing: 10,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Expanded(
-                      child: ShimmerLoading(
-                        width: double.infinity,
-                        height: 200, // poster yüksekliği
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                itemBuilder: (context, index) {
+                  return Column(
+                    spacing: 10,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Expanded(
+                        child: ShimmerLoading(
+                          width: double.infinity,
+                          height: 200,
+                        ),
                       ),
-                    ),
-
-                    ShimmerLoading(
-                      width: double.infinity,
-                      height: 20, // title yüksekliği
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-
-                    ShimmerLoading(
-                      width: 100, // director genişliği
-                      height: 14,
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    ),
-                  ],
-                ),
+                      ShimmerLoading(width: double.infinity, height: 20),
+                      ShimmerLoading(width: 100, height: 14),
+                    ],
+                  );
+                },
               ),
             ),
           );
         }
 
+        // *** FAVORİLERİ MAPLE ***
         final updatedFavorites = favoriteState.favorites.map((fav) {
           return movieState.movies.firstWhere(
             (m) => m.movieId == fav.movieId,
@@ -123,6 +113,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         }).toList();
 
+        // *** FAVORİ YOKSA ***
         if (updatedFavorites.isEmpty) {
           return Center(
             child: Padding(
@@ -138,6 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
         }
 
+        // *** FAVORİLERİ GÖSTER ***
         return Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,70 +159,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                     itemBuilder: (context, index) {
                       final movie = updatedFavorites[index];
-                      return SizedBox(
-                        child: Column(
-                          spacing: 2,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: movie.poster.isNotEmpty
-                                    ? Image.network(
-                                        movie.poster.replaceFirst(
-                                          'http://',
-                                          'https://',
-                                        ),
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                              return Container(
-                                                color: Colors.grey[300],
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.movie,
-                                                    size: 40,
-                                                    color: Colors.grey[700],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                      )
-                                    : Container(
-                                        color: Colors.grey[300],
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.movie,
-                                            size: 40,
-                                            color: Colors.grey[700],
+                      return Column(
+                        spacing: 2,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: movie.poster.isNotEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: movie.poster.replaceFirst(
+                                        'http://',
+                                        'https://',
+                                      ),
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) =>
+                                          const ShimmerLoading(
+                                            width: double.infinity,
+                                            height: double.infinity,
                                           ),
+                                      errorWidget: (context, url, error) =>
+                                          Container(
+                                            color: Colors.grey[300],
+                                            child: const Center(
+                                              child: Icon(
+                                                Icons.movie,
+                                                size: 40,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                    )
+                                  : Container(
+                                      color: Colors.grey[300],
+                                      child: const Center(
+                                        child: Icon(
+                                          Icons.movie,
+                                          size: 40,
+                                          color: Colors.grey,
                                         ),
                                       ),
-                              ),
+                                    ),
                             ),
-                            const SizedBox(height: 6),
-                            Text(
-                              movie.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontFamily:
-                                    AppFontFamilies.instrumentSansSemiBold,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            movie.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              fontFamily:
+                                  AppFontFamilies.instrumentSansSemiBold,
+                              fontWeight: FontWeight.w600,
                             ),
-                            Text(
-                              movie.director,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                color: context.theme.shadowColor.withAlpha(150),
-                                fontWeight: FontWeight.w400,
-                              ),
+                          ),
+                          Text(
+                            movie.director,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: context.theme.shadowColor.withAlpha(150),
+                              fontWeight: FontWeight.w400,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       );
                     },
                   ),
