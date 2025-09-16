@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_cubit.dart';
 import 'package:shartflix_movie_app_case/features/settings/viewmodel/language_cubit.dart';
 import 'package:shartflix_movie_app_case/features/settings/viewmodel/theme_cubit.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
@@ -109,6 +110,17 @@ class SettingsScreen extends StatelessWidget {
             ),
             onTap: () {},
           ),
+          SizedBox(height: 10),
+          _buildSettingsTile(
+            context,
+            icon: Icons.logout,
+            title: "Logout".tr(),
+            subtitle: "End your session".tr(),
+            onTap: () async {
+              await context.read<AuthCubit>().logout();
+              NavigationService().clearStackAndGo('/login');
+            },
+          ),
         ],
       ),
     );
@@ -120,7 +132,7 @@ class SettingsScreen extends StatelessWidget {
     required IconData icon,
     required String title,
     required String subtitle,
-    required Widget trailing,
+    Widget? trailing,
     required VoidCallback onTap,
   }) {
     return outlinedContainer(

@@ -3,6 +3,7 @@ import 'package:shartflix_movie_app_case/core/constants/images.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
 import 'package:shartflix_movie_app_case/core/extensions/theme_extension.dart';
 import 'package:shartflix_movie_app_case/core/services/navigation_service.dart';
+import 'package:shartflix_movie_app_case/core/utils/token.dart';
 import 'package:shartflix_movie_app_case/core/widgets/shadow_effect.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -27,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1500),
     );
 
-    // *** SLIDE ANIMASYONU ***
     _slideAnimation = TweenSequence<Offset>([
       TweenSequenceItem(
         tween: Tween<Offset>(
@@ -40,13 +40,12 @@ class _SplashScreenState extends State<SplashScreen>
       TweenSequenceItem(
         tween: Tween<Offset>(
           begin: const Offset(0, 0),
-          end: const Offset(-1, 0), // sola kayma
+          end: const Offset(-1, 0),
         ).chain(CurveTween(curve: Curves.easeIn)),
         weight: 0.5,
       ),
     ]).animate(_controller);
 
-    // *** FADE ANIMASYONU ***
     _fadeAnimation = TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween<double>(
@@ -67,9 +66,17 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    _controller.addStatusListener((status) {
+    _controller.addStatusListener((status) async {
       if (status == AnimationStatus.completed) {
-        NavigationService().clearStackAndGo('/login');
+        final token = await Token.getIdToken();
+
+        if (token != null && token.isNotEmpty) {
+          // Token varsa -> controller sayfasına git
+          NavigationService().clearStackAndGo('/controller');
+        } else {
+          // Token yoksa -> login sayfasına git
+          NavigationService().clearStackAndGo('/login');
+        }
       }
     });
   }

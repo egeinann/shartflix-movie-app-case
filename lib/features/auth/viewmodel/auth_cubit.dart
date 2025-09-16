@@ -8,7 +8,7 @@ import 'package:shartflix_movie_app_case/features/auth/viewmodel/auth_state.dart
 class AuthCubit extends Cubit<AuthState> {
   final AuthServices _authServices;
   AuthCubit(this._authServices) : super(AuthState());
-  
+
   void emailChanged(String email) => emit(state.copyWith(email: email));
   void passwordChanged(String password) =>
       emit(state.copyWith(password: password));
@@ -92,6 +92,12 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     }
+  }
+
+  // çıkış yap logout
+  Future<void> logout() async {
+    await _authServices.logout();
+    emit(AuthState()); // state sıfırla
   }
 
   // profili getir

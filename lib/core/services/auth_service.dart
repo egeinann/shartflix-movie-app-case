@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shartflix_movie_app_case/core/constants/strings.dart';
+import 'package:shartflix_movie_app_case/core/utils/token.dart';
 
 class AuthServices {
   final String baseUrl = AppStrings.baseurl;
+
+  // login giriş yap
   Future<Map<String, dynamic>> login(String email, String password) async {
     final url = Uri.parse('$baseUrl/user/login');
     final response = await http.post(
@@ -18,13 +21,18 @@ class AuthServices {
 
     if (response.statusCode == 200 && decoded['data'] != null) {
       final userData = decoded['data'];
+
+      // sadece token helper çağır
+      await Token.saveIdToken(userData['token'] ?? "");
+
+      // geri kalan user bilgilerini istersen prefs ile kaydet
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('id', userData['id'] ?? "");
-      await prefs.setString('token', userData['token'] ?? "");
       await prefs.setString('email', userData['email'] ?? "");
       await prefs.setString('name', userData['name'] ?? "");
       await prefs.setString('photoUrl', userData['photoUrl'] ?? "");
-      debugPrint(response.body);
+
+      debugPrint("Login başarılı: $userData");
       return {'success': true, 'user': userData};
     } else {
       return {
@@ -34,6 +42,7 @@ class AuthServices {
     }
   }
 
+  // kayıt ol 
   Future<Map<String, dynamic>> register(
     String name,
     String email,
@@ -60,9 +69,13 @@ class AuthServices {
 
       if (response.statusCode == 200 && decoded['data'] != null) {
         final userData = decoded['data'];
+
+        // token helper ile kaydet
+        await Token.saveIdToken(userData['token'] ?? "");
+
+        // diğer bilgileri kaydet
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('id', userData['id'] ?? "");
-        await prefs.setString('token', userData['token'] ?? "");
         await prefs.setString('email', userData['email'] ?? "");
         await prefs.setString('name', userData['name'] ?? "");
         await prefs.setString('photoUrl', userData['photoUrl'] ?? "");
@@ -87,6 +100,14 @@ class AuthServices {
     }
   }
 
+  // logout ekleyelim
+  Future<void> logout() async {
+    await Token.clearToken();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear(); // tüm user bilgilerini temizle
+  }
+
+  // progili getir
   Future<Map<String, dynamic>> getProfile() async {
     final url = Uri.parse('$baseUrl/user/profile');
     final prefs = await SharedPreferences.getInstance();
