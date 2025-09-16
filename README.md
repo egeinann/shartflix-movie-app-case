@@ -28,33 +28,5 @@
 - Giriş, sonsuz kaydırma, favoriler ve profil güncellemeleri gibi temel akışları gösterir.  
 - Uygulamanın tam test edilebilir UI ve fonksiyonelliği, yukarıdaki video demo ile gösterilmektedir.
 
----
 
-# Projenin Klasör Yapısı
-shartflix_movie_app_case/
-└── lib/
-├── connectivity/
-├── core/
-│ ├── constants/
-│ ├── extensions/
-│ ├── services/
-│ ├── themes/
-│ ├── utils/
-│ └── widgets/
-├── features/
-│ ├── auth/
-│ │ ├── model/
-│ │ ├── view/
-│ │ └── viewmodel/
-│ ├── movie/
-│ │ ├── model/
-│ │ ├── view/
-│ │ └── viewmodel/
-│ ├── photo/
-│ │ ├── view/
-│ │ └── viewmodel/
-│ ├── settings/
-│ │ ├── view/
-│ │ └── viewmodel/
-│ └── splash/
-└── main.dart
+
